@@ -73,6 +73,18 @@ uv pip install -r requirements.txt
 
 ---
 
+## 🧰 核心技術棧 (Tech Stack)
+
+本專案刻意挑選「輕量、開源、適合本地端運行」的框架，確保任何人都能零門檻執行 Benchmark：
+
+- **LangChain**：作為應用層框架，統一串接 LLM、向量檢索與關鍵字檢索機制。
+- **ChromaDB**：輕量級本地端向量資料庫 (SQLite based)，無需架設 Docker 伺服器即可「開箱即用」。
+- **Rank-BM25**：基於詞頻的關鍵字檢索演算法，完美彌補向量檢索在法規專有名詞與數字比對上的盲點。
+- **NetworkX**：Python 原生的圖論網路庫，將 Graph RAG 的實體關聯圖譜載入記憶體中進行極速拓樸擴展 (Graph Traversal)，取代笨重的圖形資料庫。
+- **BAAI/bge-m3**：HuggingFace 頂級開源 Embedding 模型，對繁體中文法規與長文本語意有極佳的捕捉能力。
+
+---
+
 ## 📊 三大架構實作原理 (Methodology)
 
 ### 1. 傳統 RAG (Hybrid Search + Structural Chunking)

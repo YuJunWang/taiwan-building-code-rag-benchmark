@@ -73,6 +73,18 @@ uv pip install -r requirements.txt
 
 ---
 
+## 🧰 Tech Stack
+
+This project deliberately selects lightweight, open-source, and local-friendly frameworks to ensure a zero-barrier execution of the benchmark:
+
+- **LangChain**: Serves as the orchestration framework, unifying the logic for LLMs, vector search, and keyword search.
+- **ChromaDB**: A lightweight, local vector database (SQLite based) that provides an "out-of-the-box" experience without needing Docker.
+- **Rank-BM25**: A keyword retrieval algorithm based on term frequency, perfectly compensating for the blind spots of vector search in matching exact legal terms and numbers.
+- **NetworkX**: A native Python graph theory library used to load Graph RAG's entity relationship graphs into memory for rapid graph traversal, bypassing the need for heavy graph databases.
+- **BAAI/bge-m3**: A top-tier open-source embedding model from HuggingFace, offering excellent semantic capture for Traditional Chinese legal and long-context texts.
+
+---
+
 ## 📊 Methodology
 
 ### 1. Traditional RAG (Hybrid Search + Structural Chunking)
