@@ -14,7 +14,7 @@ RAG_GraphRAG_LLMwiki/
 ├── data/
 │   ├── raw/
 │   │   └── building_regulations_v2.json      # 原始法規爬蟲資料
-│   └── databases/                            # [需由 Colab 下載放置此處]
+│   └── databases/                            # [已內建] 三大架構的展示用微型資料庫
 │       ├── rag_hybrid_export/                # Hybrid RAG 資料庫 (包含 Chroma 與 BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG 資料庫 (包含 GraphML 與 Entity Vector DB)
 │       └── okf_knowledge/                    # OKF 本地知識庫 (Markdown 目錄樹)
@@ -38,9 +38,27 @@ RAG_GraphRAG_LLMwiki/
 ├── requirements.txt
 ├── README.md
 └── README_EN.md
-```
 
-## 🛠️ 環境建置 (Environment Setup)
+## 🚀 快速開始 (Quick Start)
+
+由於本專案已將微型展示資料庫（MB 等級）一併包含在 Repo 中，您可以直接 clone 並執行測試，無需重新建置資料庫：
+
+```bash
+# 1. 取得專案
+git clone https://github.com/YuJunWang/taiwan-building-code-rag-benchmark.git
+cd taiwan-building-code-rag-benchmark
+
+# 2. 安裝套件
+pip install -r requirements.txt
+
+# 3. 直接執行 V2 評估腳本
+python benchmark/local_evaluator.py
+```
+> 執行後，結果將輸出至 `benchmark/results/benchmark_results_v2.csv`。
+
+## 🛠️ 資料庫建置 (Build from Scratch)
+
+如果您希望從零開始重新建置資料庫，或是將其替換為您自己的資料集，請參考以下步驟：
 
 建議使用 `uv` 或 `pip` 安裝相依套件：
 

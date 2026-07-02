@@ -14,7 +14,7 @@ RAG_GraphRAG_LLMwiki/
 ├── data/
 │   ├── raw/
 │   │   └── building_regulations_v2.json      # Raw crawled regulatory data
-│   └── databases/                            # [Download and place from Colab]
+│   └── databases/                            # [Built-in] Mini databases for the 3 architectures
 │       ├── rag_hybrid_export/                # Hybrid RAG Database (Chroma & BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG Database (GraphML & Entity Vector DB)
 │       └── okf_knowledge/                    # OKF Local Knowledge Base (Markdown Tree)
@@ -38,9 +38,27 @@ RAG_GraphRAG_LLMwiki/
 ├── requirements.txt
 ├── README.md
 └── README_EN.md
-```
 
-## 🛠️ Environment Setup
+## 🚀 Quick Start
+
+Since the mini demonstration databases (MB scale) are already included in this repository, you can clone and test directly without rebuilding them:
+
+```bash
+# 1. Clone the project
+git clone https://github.com/YuJunWang/taiwan-building-code-rag-benchmark.git
+cd taiwan-building-code-rag-benchmark
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run the V2 evaluation script
+python benchmark/local_evaluator.py
+```
+> After running, the results will be output to `benchmark/results/benchmark_results_v2.csv`.
+
+## 🛠️ Build from Scratch
+
+If you wish to rebuild the databases from scratch, or replace them with your own dataset, please refer to the following steps:
 
 It is recommended to use `uv` or `pip` to install dependencies:
 
