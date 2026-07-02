@@ -120,7 +120,7 @@ To ensure the fairness and reproducibility of the evaluation, the following para
 1. **Infrastructure**
    *   Embedding Model: `BAAI/bge-m3` was used to process Traditional Chinese legal texts.
    *   Vector DB: `Chroma` was used for vector storage.
-   *   LLM: Both the answer extraction phase and the OKF Agent reasoning phase used **Google Gemini (Advanced Agentic AI)** as the underlying model.
+   *   LLM: Both the answer extraction phase and the OKF Agent reasoning phase used **Gemini 3.1 Pro (in Antigravity 2.0 environment)** as the underlying model.
 
 2. **Retrieval Parameters per Architecture**
    *   **🟢 Hybrid RAG**
