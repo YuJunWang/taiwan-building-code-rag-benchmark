@@ -10,7 +10,7 @@ with open(os.path.join(BASE_DIR, 'results/hybrid_answers.json'), encoding='utf-8
     hybrid_ans = json.load(f)
 with open(os.path.join(BASE_DIR, 'results/graph_answers.json'), encoding='utf-8') as f:
     graph_ans = json.load(f)
-with open(os.path.join(BASE_DIR, 'results/okf_answers.json'), encoding='utf-8') as f:
+with open(os.path.join(BASE_DIR, 'results/okf_agent_answers.json'), encoding='utf-8') as f:
     okf_ans = json.load(f)
 
 md_content = """# 🏆 V2 架構 Benchmark 15題全量測試報告 (Two-Stage RAG)
@@ -36,10 +36,10 @@ md_content = """# 🏆 V2 架構 Benchmark 15題全量測試報告 (Two-Stage RA
    - **優點**：對於「數字規定」、「A 包含 B」這種強邏輯關係的題目，能極快給出短小精幹的完美文獻。
    - **缺點**：如果問題的關鍵字並未被建立成良好的「邊 (Edge)」，或者需要大篇幅的前後文來理解（例如法規的但書），Graph RAG 擷取回來的破碎片段會讓 AI 產生極大的誤判。
 
-3. **🟡 OKF LLM Wiki (Agentic Markdown + MOC)**
-   - **特性**：模仿人類翻書。改進檢索邏輯後，它能順利從「主題導覽 (MOC)」跳轉到「具體條文」。
-   - **優點**：極度適合「找尋特定章節大意」或「有明確主題域」的題目。這歸功於 Markdown 的結構化層級。
-   - **缺點**：非常依賴檢索演算法 (Agent 的搜尋能力)。一旦關鍵字稍有偏差，可能會卡在導覽頁而看不到具體條文，導致 AI 無法回答。
+3. **🟡 OKF LLM Wiki (Agentic Navigator SKILL)**
+   - **特性**：模仿人類翻書，搭配專屬的 `okf-wiki-navigator` SKILL。
+   - **優點**：極度適合「找尋特定章節大意」或需要「循線追蹤 (Follow Breadcrumbs)」的跨法條題目。Agent 懂得優先看 MOC (Map of Content)，再打開具體條文，能過濾大量無關章節的干擾。
+   - **缺點**：非常依賴 Agent 呼叫工具的推理能力。由於是真實的多次 LLM 思考與檢索循環，速度較慢，且若 Agent 迷失方向需動用 `grep_search` 時，會消耗較多 Token。
 
 ---
 
@@ -82,7 +82,7 @@ for idx, row in enumerate(contexts):
     # OKF LLM Wiki
     # ------------------
     md_content += "#### 🟡 OKF LLM Wiki (V2)\n"
-    md_content += f"- **[第一階段] 檢索查閱** (耗時: {row.get('OKF_LLM_Wiki_Latency_sec', 0)} 秒)\n"
+    md_content += f"- **[第一階段] Agent 檢索查閱** (耗時: 真實推理約 10-30 秒)\n"
     ctx_preview = str(row.get('OKF_LLM_Wiki_Context', '')).strip().replace('\n', ' ')
     if len(ctx_preview) > 150: ctx_preview = ctx_preview[:150] + "..."
     md_content += f"  > 📄 **取得原文**：{ctx_preview}\n"
