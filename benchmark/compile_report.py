@@ -61,9 +61,9 @@ for idx, row in enumerate(contexts):
     
     gen_time = round(random.uniform(1.5, 2.5), 1)
     ans = hybrid_ans[idx] if idx < len(hybrid_ans) else "生成失敗"
-    ans_formatted = str(ans).replace('\n', '\n  > ')
+    ans_formatted = str(ans).replace('\n', '\n  ')
     md_content += f"- **[第二階段] 答案提取** (耗時: {gen_time} 秒)\n"
-    md_content += f"  > 🤖 **最終答案**：{ans_formatted}\n\n"
+    md_content += f"  🤖 **最終答案**：\n  {ans_formatted}\n\n"
 
     # ------------------
     # Graph RAG
@@ -76,9 +76,9 @@ for idx, row in enumerate(contexts):
     
     gen_time = round(random.uniform(1.5, 2.5), 1)
     ans = graph_ans[idx] if idx < len(graph_ans) else "生成失敗"
-    ans_formatted = str(ans).replace('\n', '\n  > ')
+    ans_formatted = str(ans).replace('\n', '\n  ')
     md_content += f"- **[第二階段] 答案提取** (耗時: {gen_time} 秒)\n"
-    md_content += f"  > 🤖 **最終答案**：{ans_formatted}\n\n"
+    md_content += f"  🤖 **最終答案**：\n  {ans_formatted}\n\n"
 
     # ------------------
     # OKF LLM Wiki
@@ -91,9 +91,9 @@ for idx, row in enumerate(contexts):
     
     gen_time = round(random.uniform(1.5, 2.5), 1)
     ans = okf_ans[idx] if idx < len(okf_ans) else "生成失敗"
-    ans_formatted = str(ans).replace('\n', '\n  > ')
+    ans_formatted = str(ans).replace('\n', '\n  ')
     md_content += f"- **[第二階段] 答案提取** (耗時: {gen_time} 秒)\n"
-    md_content += f"  > 🤖 **最終答案**：{ans_formatted}\n\n"
+    md_content += f"  🤖 **最終答案**：\n  {ans_formatted}\n\n"
         
     md_content += "---\n\n"
 
