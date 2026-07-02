@@ -46,7 +46,16 @@ def retrieve_hybrid_rag(query):
     start_time = time.time()
     # 這裡我們簡化實作，直接抓取 Vector Top-3 做為檢索結果
     docs = hybrid_db.similarity_search(query, k=3)
-    context = "\n".join([d.page_content for d in docs])
+    
+    # V2: Parent-Child Retriever 邏輯
+    # 讀取 Metadata 中的 parent_text，若無則降級使用 page_content
+    context_chunks = []
+    for d in docs:
+        parent = d.metadata.get("parent_text", d.page_content)
+        context_chunks.append(parent)
+    
+    # 使用 set 去重，避免同一個父條文被重複放入
+    context = "\n---\n".join(set(context_chunks))
     latency = time.time() - start_time
     return context, latency
 
@@ -64,10 +73,16 @@ def retrieve_graph_rag(query):
     entry_docs = entity_db.similarity_search(query, k=3)
     entry_nodes = [doc.page_content for doc in entry_docs]
     
-    # 2. 擴展圖譜 (Graph Traversal - 1 Hop)
+    # 2. 擴展圖譜 (Graph Traversal - 1 Hop) 與 原文提取
     retrieved_knowledge = []
     for node in entry_nodes:
         if node in G:
+            # V2: Graph-Document Binding 邏輯
+            # 直接抓出綁定在實體節點上的原始法條
+            raw_text = G.nodes[node].get("raw_text", "")
+            if raw_text:
+                retrieved_knowledge.append(f"【實體原文 - {node}】\n{raw_text}")
+                
             for neighbor in G.neighbors(node):
                 edge_data = G.get_edge_data(node, neighbor)
                 relation = edge_data.get('relation', '相關於')
@@ -103,6 +118,6 @@ for i, q in enumerate(QUESTIONS):
 
 # 輸出報告
 df = pd.DataFrame(results)
-df.to_csv("benchmark_results.csv", index=False, encoding="utf-8-sig")
-print("\n✅ 評估完成！結果已儲存為 benchmark_results.csv")
+df.to_csv("benchmark_results_v2.csv", index=False, encoding="utf-8-sig")
+print("\n✅ 評估完成！結果已儲存為 benchmark_results_v2.csv")
 print("您現在可以檢視 CSV 檔案，比較兩者撈出的法規上下文 (Context) 準確度。")
