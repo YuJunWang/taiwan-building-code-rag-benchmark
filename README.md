@@ -113,6 +113,31 @@ uv pip install -r requirements.txt
 
 ---
 
+## ⚙️ 實驗環境與檢索參數設定 (Experimental Setup)
+
+為了確保評估的公平性與可重現性，本次 Benchmark 在本地端執行 `local_evaluator.py` 與 Agent 測試時，採用以下參數設定：
+
+1. **基礎設施**
+   *   Embedding Model：採用 `BAAI/bge-m3` 處理繁體中文法規。
+   *   Vector DB：採用 `Chroma` 進行向量儲存。
+   *   LLM：答案提取階段與 OKF Agent 推理階段皆使用 `gpt-4o-mini` (或同等級輕量模型)。
+
+2. **各架構檢索參數 (Retrieval Parameters)**
+   *   **🟢 Hybrid RAG**
+       *   **檢索策略**：Vector Search + BM25
+       *   **Top-K**：取最相關的前 3 個 Chunk (`k=3`)。
+       *   **後處理**：透過 Parent-Child Retriever 邏輯，將命中的小 Chunk 還原回所屬的「完整父條文 (Parent Text)」，以確保法規脈絡不被切斷。
+   *   **🔵 Graph RAG**
+       *   **入口搜尋**：對實體 (Entity) 向量庫進行相似度檢索，取 Top 3 實體 (`k=3`) 作為入口節點。
+       *   **圖譜擴展**：進行 1-Hop 拓樸擴展 (提取關聯邊與鄰居節點)。
+       *   **上下文限制**：最多回傳 15 筆拓樸邊 (`limit=15`)，並一併附上入口節點所綁定的完整實體原文 (Graph-Document Binding)。
+   *   **🟡 OKF LLM Wiki**
+       *   **檢索策略**：純 Agentic 探索，完全不用 Vector DB。
+       *   **賦予工具**：僅提供 `list_dir` (讀取目錄)、`view_file` (檢視文件)、`grep_search` (關鍵字搜尋)。
+       *   **導航守則**：嚴格遵守 `agent_skills/okf-wiki-navigator`，強制 Agent 先閱讀目錄 (MOC)，再循線鑽取至底層 Markdown 檔案。
+
+---
+
 ## 🏆 Benchmark 測試報告 (Evaluation Results)
 
 我們設計了 15 題涵蓋「事實檢索」、「跨條文推論」、「全局總結」的問題，在本地端執行 `local_evaluator.py`，產生出 `benchmark_results.csv`。以下是三大架構在我們測試下的綜合表現：

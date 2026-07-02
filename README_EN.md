@@ -109,7 +109,32 @@ Based on the initial test results, we have completed major architecture upgrades
 2. **Graph RAG**: "Graph-Document Binding", nodes now carry the full original text.
 3. **OKF LLM Wiki**: "Bigram Retrieval & Thematic MOCs", greatly strengthening the Agent's cross-chapter search ability.
 
-> 👉 **[Click here: 15-Question V2 Benchmark Final Report](docs/benchmark_v2_report.md)**
+> 👉 **[Click here: 15-Question Full V2 Benchmark Ultimate Test Report](docs/benchmark_v2_report.md)**
+
+---
+
+## ⚙️ Experimental Setup & Retrieval Parameters
+
+To ensure the fairness and reproducibility of the evaluation, the following parameters were used during the execution of `local_evaluator.py` and Agent testing in this Benchmark:
+
+1. **Infrastructure**
+   *   Embedding Model: `BAAI/bge-m3` was used to process Traditional Chinese legal texts.
+   *   Vector DB: `Chroma` was used for vector storage.
+   *   LLM: Both the answer extraction phase and the OKF Agent reasoning phase used `gpt-4o-mini` (or an equivalent lightweight model).
+
+2. **Retrieval Parameters per Architecture**
+   *   **🟢 Hybrid RAG**
+       *   **Retrieval Strategy**: Vector Search + BM25
+       *   **Top-K**: Retrieves the top 3 most relevant chunks (`k=3`).
+       *   **Post-processing**: Through the Parent-Child Retriever logic, the matched small chunks are restored to their "Parent Text" to ensure the context of the law is not truncated.
+   *   **🔵 Graph RAG**
+       *   **Entry Point Search**: Performs similarity search on the Entity vector database, taking the Top 3 entities (`k=3`) as entry nodes.
+       *   **Graph Expansion**: Performs 1-Hop topology expansion (extracting associated edges and neighbor nodes).
+       *   **Context Limit**: Returns a maximum of 15 topology edges (`limit=15`) and attaches the complete original entity text bound to the entry node (Graph-Document Binding).
+   *   **🟡 OKF LLM Wiki**
+       *   **Retrieval Strategy**: Purely Agentic exploration, completely without Vector DB.
+       *   **Tools Provided**: Only `list_dir` (read directory), `view_file` (view file), and `grep_search` (keyword search) are provided.
+       *   **Navigation Rules**: Strictly follows `agent_skills/okf-wiki-navigator`, forcing the Agent to read the Map of Content (MOC) first, then follow the breadcrumbs down to the bottom-level Markdown files.
 
 ---
 
