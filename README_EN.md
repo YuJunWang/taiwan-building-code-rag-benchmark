@@ -14,7 +14,7 @@ RAG_GraphRAG_LLMwiki/
 ├── data/
 │   ├── raw/
 │   │   └── building_regulations_v2.json      # Raw crawled regulatory data
-│   └── databases/                            # [Built-in] Mini databases for the 3 architectures
+│   └── databases/                            # [Built-in] Complete databases for the 3 architectures
 │       ├── rag_hybrid_export/                # Hybrid RAG Database (Chroma & BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG Database (GraphML & Entity Vector DB)
 │       └── okf_knowledge/                    # OKF Local Knowledge Base (Markdown Tree)
@@ -42,7 +42,7 @@ RAG_GraphRAG_LLMwiki/
 
 ## 🚀 Quick Start
 
-Since the mini demonstration databases (MB scale) are already included in this repository, you can clone and test directly without rebuilding them:
+Since the text-based databases are small in size (MB scale), the complete databases for all three architectures are already included in this repository. You can clone and test directly without rebuilding them:
 
 ```bash
 # 1. Clone the project

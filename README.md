@@ -14,7 +14,7 @@ RAG_GraphRAG_LLMwiki/
 ├── data/
 │   ├── raw/
 │   │   └── building_regulations_v2.json      # 原始法規爬蟲資料
-│   └── databases/                            # [已內建] 三大架構的展示用微型資料庫
+│   └── databases/                            # [已內建] 三大架構的完整法規資料庫
 │       ├── rag_hybrid_export/                # Hybrid RAG 資料庫 (包含 Chroma 與 BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG 資料庫 (包含 GraphML 與 Entity Vector DB)
 │       └── okf_knowledge/                    # OKF 本地知識庫 (Markdown 目錄樹)
@@ -42,7 +42,7 @@ RAG_GraphRAG_LLMwiki/
 
 ## 🚀 快速開始 (Quick Start)
 
-由於本專案已將微型展示資料庫（MB 等級）一併包含在 Repo 中，您可以直接 clone 並執行測試，無需重新建置資料庫：
+由於法規純文字資料庫體積不大（MB 等級），本專案已將三大架構的完整資料庫一併包含在 Repo 中，您可以直接 clone 並執行測試，無需重新建置資料庫：
 
 ```bash
 # 1. 取得專案
