@@ -38,6 +38,7 @@ RAG_GraphRAG_LLMwiki/
 ├── requirements.txt
 ├── README.md
 └── README_EN.md
+```
 
 ## 🚀 快速開始 (Quick Start)
 
