@@ -18,6 +18,8 @@ RAG_GraphRAG_LLMwiki/
 │       ├── rag_hybrid_export/                # Hybrid RAG 資料庫 (包含 Chroma 與 BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG 資料庫 (包含 GraphML 與 Entity Vector DB)
 │       └── okf_knowledge/                    # OKF 本地知識庫 (Markdown 目錄樹)
+├── agent_skills/
+│   └── okf-wiki-navigator/                   # OKF 專屬 Agent 導航策略 (SKILL)
 ├── scripts/
 │   ├── build/                                # 三大資料庫 Colab 雲端建置腳本
 │   │   ├── colab_build_rag.py
@@ -30,7 +32,7 @@ RAG_GraphRAG_LLMwiki/
 │   └── results/                              # 查詢結果與報表
 │       ├── hybrid_answers.json
 │       ├── graph_answers.json
-│       ├── okf_answers.json
+│       ├── okf_agent_answers.json            # 真實 Agent 測試產出的最終答案
 │       └── benchmark_results_v2.csv
 ├── docs/                                     # 文件與 Markdown 報表
 │   └── benchmark_v2_report.md
@@ -95,9 +97,9 @@ uv pip install -r requirements.txt
 - **建置原理**：交由 Qwen2.5-7B-Instruct 萃取法規中的三元組 (Subject-Predicate-Object) 並建立成千上萬個節點。
 - **檢索機制**：雙層檢索架構。第一層透過 Vector DB 找到與 User Query 相關的「實體入口節點 (Entry Point)」，第二層從入口節點利用 NetworkX 在知識圖譜中進行擴展 (Graph Traversal)，一次性拉出高度關聯的知識網。
 
-### 3. OKF-based LLM Wiki (Hierarchical MOC + Agent Tools)
+### 3. OKF-based LLM Wiki (Hierarchical MOC + Agent Tools + SKILL)
 - **建置原理**：以純文字 Markdown 資料夾樹為基礎。透過 Regex 建立實體內部連結，並由 LLM 為每一條法規補上 `Summary` 與 `Tags`，最終在每個資料夾生成 `_index.md` (Map of Content)。
-- **檢索機制**：依賴具有 `list_dir`, `grep` 工具的 Agent 進行主動導航與探索，完全無須建立龐大的 Vector DB。
+- **檢索機制**：依賴具有 `list_dir`, `view_file` 等工具的 Agent 進行主動導航與探索。為了解決 Agent 迷失的問題，我們特別開發了 `okf-wiki-navigator` SKILL，賦予 Agent「優先閱讀 MOC (目錄)」與「循線追蹤麵包屑」的能力，使其具備真正的人類翻書邏輯，完全無須建立龐大的 Vector DB。
 
 ## 🚀 V2 架構升級重點與成果 (V2 Enhancements)
 

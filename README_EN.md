@@ -18,6 +18,8 @@ RAG_GraphRAG_LLMwiki/
 │       ├── rag_hybrid_export/                # Hybrid RAG Database (Chroma & BM25)
 │       ├── graph_rag_hybrid_export/          # Graph RAG Database (GraphML & Entity Vector DB)
 │       └── okf_knowledge/                    # OKF Local Knowledge Base (Markdown Tree)
+├── agent_skills/
+│   └── okf-wiki-navigator/                   # OKF Agent Navigation Strategy (SKILL)
 ├── scripts/
 │   ├── build/                                # Colab build scripts for the 3 databases
 │   │   ├── colab_build_rag.py
@@ -30,7 +32,7 @@ RAG_GraphRAG_LLMwiki/
 │   └── results/                              # Query results and CSV
 │       ├── hybrid_answers.json
 │       ├── graph_answers.json
-│       ├── okf_answers.json
+│       ├── okf_agent_answers.json            # Final answers produced by the real Agent test
 │       └── benchmark_results_v2.csv
 ├── docs/                                     # Documentation and Markdown reports
 │   └── benchmark_v2_report.md
@@ -95,9 +97,9 @@ This project deliberately selects lightweight, open-source, and local-friendly f
 - **Construction**: Relies on Qwen2.5-7B-Instruct to extract Triplets (Subject-Predicate-Object) from the regulations, generating thousands of interconnected nodes.
 - **Retrieval**: A two-tiered architecture. The first tier uses a Vector DB to find "Entity Entry Points" related to the User Query. The second tier traverses the Knowledge Graph via NetworkX from those entry points, pulling a highly correlated web of knowledge simultaneously.
 
-### 3. OKF-based LLM Wiki (Hierarchical MOC + Agent Tools)
+### 3. OKF-based LLM Wiki (Hierarchical MOC + Agent Tools + SKILL)
 - **Construction**: Based on a pure text Markdown folder tree. Internal links are established via Regex, and an LLM appends a `Summary` and `Tags` to each regulation, ultimately generating an `_index.md` (Map of Content) for each folder.
-- **Retrieval**: Relies on an AI Agent equipped with `list_dir` and `grep` tools for active navigation and exploration, completely eliminating the need for a massive Vector DB.
+- **Retrieval**: Relies on an AI Agent equipped with `list_dir` and `view_file` tools for active navigation and exploration. To prevent the Agent from getting lost, we specifically developed the `okf-wiki-navigator` SKILL. This grants the Agent the ability to "prioritize reading the MOC (directory)" and "follow breadcrumbs", giving it true human-like book-flipping logic, completely eliminating the need for a massive Vector DB.
 
 ## 🚀 V2 Enhancements
 
