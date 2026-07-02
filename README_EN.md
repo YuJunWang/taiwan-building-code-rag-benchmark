@@ -98,18 +98,19 @@ To illustrate, here are excerpts from our actual `benchmark_results.csv`:
 
 ---
 
-## 🔮 Future Work
+## 🚀 V2 Enhancements
 
-Based on the Phase 1 Benchmark, we have identified major upgrades for the "V2 Iteration":
+Based on the Phase 1 Benchmark, we have successfully implemented the following major architecture upgrades in the latest V2 database:
 
 ### 1. Hybrid RAG: "Parent-Child Retriever"
-- **Pain Point**: Top-3 chunks are often too fragmented, lacking context.
-- **Solution**: Keep the Vector DB chunk size, but bind the "Parent Level (e.g., full article)" in the MetaData. When a chunk is hit, pass the entire parent text to the LLM.
+Without changing the Vector DB chunk size, we bound the "Full Article (parent_text)" in the MetaData. Now, when a small chunk is retrieved, the system automatically restores the entire regulation, completely resolving the context fragmentation issue caused by Top-K retrieval.
 
 ### 2. Graph RAG: "Graph-Document Binding"
-- **Pain Point**: LLM triplet extraction abstracts detailed noun definitions into short edges, causing a lack of detail in factual answers.
-- **Solution**: When creating Entity Nodes, write the original "Raw Regulation Text" directly into the node's `Properties`. When traversed, output the raw text alongside the graph topology.
+When creating Entity Nodes in the knowledge graph, we now write the original "Raw Regulation Text (raw_text)" directly into the node's properties. During Graph Traversal, the LLM not only sees the relational edges between nodes but also reads the most detailed original text of the regulation.
 
 ### 3. OKF LLM Wiki: "Thematic Indexes (MOCs)"
-- **Pain Point**: When answering questions involving scattered articles, the Agent spends too much time searching.
-- **Solution**: Besides hierarchical MOCs, periodically have the LLM aggregate cross-chapter Thematic MOCs (e.g., `_theme_private_road.md`) based on YAML tags, allowing the Agent to access all related links in one click!
+In addition to the existing chapter hierarchy, the system now automatically aggregates **cross-chapter Thematic MOCs** (e.g., `_theme_fire_compartment.md`) based on global YAML Tags. Agents can now access all related links with a single click when dealing with complex queries scattered across various chapters!
+
+> 💡 **Want to see the stunning results of the V2 upgrade?**
+> We re-tested the upgraded system against the 15 rigorous questions. Please see:
+> 👉 **[V2 Architecture Benchmark Detailed Report](docs/benchmark_v2_report.md)**
