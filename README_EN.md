@@ -34,6 +34,7 @@ RAG_GraphRAG_LLMwiki/
 │       ├── graph_answers.json
 │       ├── okf_agent_answers.json            # Final answers produced by the real Agent test
 │       └── benchmark_results_v2.csv
+├── agent_skills/                             # Agent navigation skills (SKILL)
 ├── docs/                                     # Documentation and Markdown reports
 │   └── benchmark_v2_report.md
 ├── archive/                                  # Historical and temp files (gitignored)
@@ -136,9 +137,9 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
     *   **[Stage 2] Answer Extraction**: 🤖 *"Clearly defined as: the 'horizontal projection area' of the building base."*
         *   ✅ **Complete Answer**
 *   **🔵 Graph RAG**
-    *   **[Stage 1] Retrieval**: Extracted edges like `[Article 161] Base Area -includes-> Statutory Arcade Area`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"The retrieved graph results only indicate that the calculation includes the statutory arcade area, and does not provide the most basic regulatory definition."*
-        *   ❌ **Missing Key Definition**
+    *   **[Stage 1] Retrieval**: Extracted `【Entity Text - Building Base Area】 Building base area: the horizontal projection area of the building base.`
+    *   **[Stage 2] Answer Extraction**: 🤖 *"According to the context, the definition of the building base area is 'the horizontal projection area of the building base (hereinafter referred to as the base)'."*
+        *   ✅ **Complete Answer** (Successfully answered after introducing entity text binding in V2)
 *   **🟡 OKF LLM Wiki**
     *   **[Stage 1] Agent Retrieval**: The Agent successfully matched `Chapter 1_Terminology` and snippets of `Article 1.md`.
     *   **[Stage 2] Answer Extraction**: 🤖 *"According to the Building Technical Regulations, the definition of 'building site area' is: the horizontal projection area of the building site (hereinafter referred to as the site)."*
