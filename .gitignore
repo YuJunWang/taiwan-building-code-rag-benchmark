@@ -30,6 +30,10 @@ v1_archive_data/
 rag_hybrid_export/
 graph_rag_hybrid_export/
 okf_knowledge/
+okf_knowledge_RAW/
+ZIP_data_V1/
+ZIP_data_V2/
+data_crawled/
 *.csv
 *.zip
 *.db
