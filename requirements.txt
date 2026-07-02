@@ -1,0 +1,17 @@
+# Colab 雲端建置環境 (建議在 Colab 執行)
+# google-colab
+# torch
+# transformers
+# bitsandbytes
+# accelerate
+
+# 本地端與共用相依套件
+langchain==0.2.14
+langchain-community==0.2.12
+langchain-huggingface==0.0.3
+chromadb==0.5.9
+sentence-transformers==3.0.1
+networkx==3.3
+pandas==2.2.2
+rank_bm25==0.2.2
+tqdm==4.66.5
