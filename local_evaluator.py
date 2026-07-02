@@ -119,5 +119,5 @@ for i, q in enumerate(QUESTIONS):
 # 輸出報告
 df = pd.DataFrame(results)
 df.to_csv("benchmark_results_v2.csv", index=False, encoding="utf-8-sig")
-print("\n✅ 評估完成！結果已儲存為 benchmark_results_v2.csv")
+print("\n[OK] 評估完成！結果已儲存為 benchmark_results_v2.csv")
 print("您現在可以檢視 CSV 檔案，比較兩者撈出的法規上下文 (Context) 準確度。")
