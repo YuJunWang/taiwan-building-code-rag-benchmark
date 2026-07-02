@@ -97,48 +97,51 @@ def retrieve_graph_rag(query):
 # 4. 模擬 OKF LLM Wiki (Agent Tool)
 # ==========================================
 import glob
+import re
 
 def retrieve_okf_wiki(query):
     start_time = time.time()
     
-    # 模擬 Agent 使用 grep 或 list_dir 尋找相關文件
-    # 我們這裡用一個簡單的關鍵字計分系統來模擬 Agent 找到最佳文件的過程
-    keywords = ['面積', '無窗戶', '防火', '車道', '私設通路', '昇降機', '避難', '屋頂', '高層', '防空', '綠建築', '無障礙', '間隔', '分戶牆', '法定空地']
-    query_keywords = [k for k in keywords if k in query]
+    # 移除標點符號與常見停用詞，擷取查詢的 Bigram (兩兩相連的字) 作為特徵
+    clean_query = re.sub(r'[^\w\s]', '', query)
+    bigrams = [clean_query[i:i+2] for i in range(len(clean_query)-1)]
     
-    best_file = None
-    max_score = 0
+    file_scores = []
     
-    # 在 V2 中，Agent 會優先尋找 "主題索引" (Thematic MOCs)
     all_files = glob.glob("okf_knowledge/**/*.md", recursive=True)
     
     for file_path in all_files:
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
-                # 基本計分：包含關鍵字
-                score = sum(2 if k in file_path else 1 for k in query_keywords if k in content)
                 
-                # V2 邏輯：如果是主題彙整 _theme_ 開頭，分數加權 (因為 Agent 肯定會先看統整包)
+                # 計算 Bigram 在內文中出現的次數總和
+                score = sum(content.count(bg) for bg in bigrams)
+                
+                # 如果檔名直接命中關鍵字，給予巨大加權
+                for bg in bigrams:
+                    if bg in file_path:
+                        score += 50
+                        
+                # 主題彙整包加權
                 if "_theme_" in file_path:
-                    score += 5
+                    score += 20
                     
-                if score > max_score:
-                    max_score = score
-                    best_file = (file_path, content)
+                file_scores.append((score, file_path, content))
         except Exception:
             pass
             
-    context = ""
-    # 模擬 Agent 實際操作工具的延遲時間 (通常大於 5 秒)
-    latency = time.time() - start_time + 8.5 
+    # 根據分數排序，取前 2 名文件
+    file_scores.sort(key=lambda x: x[0], reverse=True)
+    top_files = file_scores[:2]
     
-    if best_file:
-        file_path, content = best_file
-        # 截取前半段模擬 Agent 讀取到的內容
-        context = f"【Agent 查閱路徑：{file_path}】\n{content[:800]}..."
+    context = ""
+    for rank, (score, file_path, content) in enumerate(top_files):
+        # 截取前半段模擬 Agent 讀取到的內容，給予更多 Token
+        context += f"【Agent 查閱文獻 {rank+1}：{file_path}】\n{content[:1200]}...\n\n"
         
-    return context, latency
+    latency = time.time() - start_time + 8.5 
+    return context.strip(), latency
 
 # ==========================================
 # 5. 執行評估迴圈
