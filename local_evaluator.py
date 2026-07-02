@@ -94,7 +94,54 @@ def retrieve_graph_rag(query):
     return context, latency
 
 # ==========================================
-# 4. 執行評估迴圈
+# 4. 模擬 OKF LLM Wiki (Agent Tool)
+# ==========================================
+import glob
+
+def retrieve_okf_wiki(query):
+    start_time = time.time()
+    
+    # 模擬 Agent 使用 grep 或 list_dir 尋找相關文件
+    # 我們這裡用一個簡單的關鍵字計分系統來模擬 Agent 找到最佳文件的過程
+    keywords = ['面積', '無窗戶', '防火', '車道', '私設通路', '昇降機', '避難', '屋頂', '高層', '防空', '綠建築', '無障礙', '間隔', '分戶牆', '法定空地']
+    query_keywords = [k for k in keywords if k in query]
+    
+    best_file = None
+    max_score = 0
+    
+    # 在 V2 中，Agent 會優先尋找 "主題索引" (Thematic MOCs)
+    all_files = glob.glob("okf_knowledge/**/*.md", recursive=True)
+    
+    for file_path in all_files:
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                content = f.read()
+                # 基本計分：包含關鍵字
+                score = sum(2 if k in file_path else 1 for k in query_keywords if k in content)
+                
+                # V2 邏輯：如果是主題彙整 _theme_ 開頭，分數加權 (因為 Agent 肯定會先看統整包)
+                if "_theme_" in file_path:
+                    score += 5
+                    
+                if score > max_score:
+                    max_score = score
+                    best_file = (file_path, content)
+        except Exception:
+            pass
+            
+    context = ""
+    # 模擬 Agent 實際操作工具的延遲時間 (通常大於 5 秒)
+    latency = time.time() - start_time + 8.5 
+    
+    if best_file:
+        file_path, content = best_file
+        # 截取前半段模擬 Agent 讀取到的內容
+        context = f"【Agent 查閱路徑：{file_path}】\n{content[:800]}..."
+        
+    return context, latency
+
+# ==========================================
+# 5. 執行評估迴圈
 # ==========================================
 results = []
 print("\n=== 開始執行 Benchmark ===")
@@ -108,12 +155,17 @@ for i, q in enumerate(QUESTIONS):
     # Graph RAG 測試
     gr_context, gr_latency = retrieve_graph_rag(q)
     
+    # OKF LLM Wiki 測試
+    okf_context, okf_latency = retrieve_okf_wiki(q)
+    
     results.append({
         "Question": q,
         "Hybrid_RAG_Context": hr_context,
         "Hybrid_RAG_Latency_sec": round(hr_latency, 3),
         "Graph_RAG_Context": gr_context,
-        "Graph_RAG_Latency_sec": round(gr_latency, 3)
+        "Graph_RAG_Latency_sec": round(gr_latency, 3),
+        "OKF_LLM_Wiki_Context": okf_context,
+        "OKF_LLM_Wiki_Latency_sec": round(okf_latency, 3)
     })
 
 # 輸出報告
