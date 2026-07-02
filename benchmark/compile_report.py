@@ -2,13 +2,13 @@ import json
 import random
 import os
 
-with open('all_contexts.json', encoding='utf-8') as f:
+with open('evaluation_questions.json', encoding='utf-8') as f:
     contexts = json.load(f)
-with open('hybrid_answers.json', encoding='utf-8') as f:
+with open('results/hybrid_answers.json', encoding='utf-8') as f:
     hybrid_ans = json.load(f)
-with open('graph_answers.json', encoding='utf-8') as f:
+with open('results/graph_answers.json', encoding='utf-8') as f:
     graph_ans = json.load(f)
-with open('okf_answers.json', encoding='utf-8') as f:
+with open('results/okf_answers.json', encoding='utf-8') as f:
     okf_ans = json.load(f)
 
 md_content = """# 🏆 V2 架構 Benchmark 15題全量測試報告 (Two-Stage RAG)
@@ -92,7 +92,7 @@ for idx, row in enumerate(contexts):
         
     md_content += "---\n\n"
 
-with open("docs/benchmark_v2_report.md", "w", encoding="utf-8") as f:
+with open("../docs/benchmark_v2_report.md", "w", encoding="utf-8") as f:
     f.write(md_content)
 
 print("Report compiled successfully!")

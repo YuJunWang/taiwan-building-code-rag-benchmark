@@ -11,26 +11,33 @@ To ensure the local automated testing scripts run smoothly, please maintain the 
 
 ```text
 RAG_GraphRAG_LLMwiki/
-│
-├── building_regulations_v2.json      # Raw crawled regulatory data
-├── colab_build_rag.py                # Cloud build script (Hybrid RAG)
-├── colab_build_graph_rag.py          # Cloud build script (Graph RAG)
-├── colab_build_okf_enrichment.py     # Cloud build script (OKF Tagging)
-├── local_evaluator.py                # Local automated evaluation script
-├── requirements.txt                  # Python dependencies (supports uv/pip)
-│
-├── rag_hybrid_export/                # 📥 [Download] Hybrid RAG Database
-│   └── chroma_db/                    # Contains Vector and BM25 indexes
-│
-├── graph_rag_hybrid_export/          # 📥 [Download] Graph RAG Database
-│   ├── graph_rag_export.graphml      # NetworkX Knowledge Graph body
-│   ├── graph_rag_export.json         # Graph metadata
-│   └── entity_vector_db/             # Entity Node (Entry Points) vector DB
-│
-└── okf_knowledge/                    # 📥 [Download] OKF Local Knowledge Base
-    ├── 第一章_用語定義/               # Chapter 1
-    ├── 第二章_一般設計通則/             # Chapter 2
-    └── ...
+├── data/
+│   ├── raw/
+│   │   └── building_regulations_v2.json      # Raw crawled regulatory data
+│   └── databases/                            # [Download and place from Colab]
+│       ├── rag_hybrid_export/                # Hybrid RAG Database (Chroma & BM25)
+│       ├── graph_rag_hybrid_export/          # Graph RAG Database (GraphML & Entity Vector DB)
+│       └── okf_knowledge/                    # OKF Local Knowledge Base (Markdown Tree)
+├── scripts/
+│   ├── build/                                # Colab build scripts for the 3 databases
+│   │   ├── colab_build_rag.py
+│   │   ├── colab_build_graph_rag.py
+│   │   └── colab_build_okf_enrichment.py
+├── benchmark/                                # Evaluation and Testing
+│   ├── evaluation_questions.json             # 15 benchmark questions
+│   ├── local_evaluator.py                    # Local automated evaluation script
+│   ├── compile_report.py                     # Report generation script
+│   └── results/                              # Query results and CSV
+│       ├── hybrid_answers.json
+│       ├── graph_answers.json
+│       ├── okf_answers.json
+│       └── benchmark_results_v2.csv
+├── docs/                                     # Documentation and Markdown reports
+│   └── benchmark_v2_report.md
+├── archive/                                  # Historical and temp files (gitignored)
+├── requirements.txt
+├── README.md
+└── README_EN.md
 ```
 
 ## 🛠️ Environment Setup

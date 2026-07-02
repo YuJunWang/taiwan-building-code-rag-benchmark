@@ -11,26 +11,33 @@
 
 ```text
 RAG_GraphRAG_LLMwiki/
-│
-├── building_regulations_v2.json      # 原始法規爬蟲資料
-├── colab_build_rag.py                # 雲端建置腳本 (Hybrid RAG)
-├── colab_build_graph_rag.py          # 雲端建置腳本 (Graph RAG)
-├── colab_build_okf_enrichment.py     # 雲端建置腳本 (OKF 標註)
-├── local_evaluator.py                # 本地端自動化評估腳本
-├── requirements.txt                  # Python 相依套件清單 (支援 uv/pip)
-│
-├── rag_hybrid_export/                # 📥 [下載] Hybrid RAG 資料庫
-│   └── chroma_db/                    # 包含 Vector 與 BM25 索引
-│
-├── graph_rag_hybrid_export/          # 📥 [下載] Graph RAG 資料庫
-│   ├── graph_rag_export.graphml      # NetworkX 知識圖譜本體
-│   ├── graph_rag_export.json         # 圖譜元資料
-│   └── entity_vector_db/             # 實體節點 (Entry Points) 向量庫
-│
-└── okf_knowledge/                    # 📥 [下載] OKF 本地知識庫
-    ├── 第一章_用語定義/
-    ├── 第二章_一般設計通則/
-    └── ...
+├── data/
+│   ├── raw/
+│   │   └── building_regulations_v2.json      # 原始法規爬蟲資料
+│   └── databases/                            # [需由 Colab 下載放置此處]
+│       ├── rag_hybrid_export/                # Hybrid RAG 資料庫 (包含 Chroma 與 BM25)
+│       ├── graph_rag_hybrid_export/          # Graph RAG 資料庫 (包含 GraphML 與 Entity Vector DB)
+│       └── okf_knowledge/                    # OKF 本地知識庫 (Markdown 目錄樹)
+├── scripts/
+│   ├── build/                                # 三大資料庫 Colab 雲端建置腳本
+│   │   ├── colab_build_rag.py
+│   │   ├── colab_build_graph_rag.py
+│   │   └── colab_build_okf_enrichment.py
+├── benchmark/                                # 評估與測試區
+│   ├── evaluation_questions.json             # 15個基準測試題目 (從 all_contexts.json 萃取)
+│   ├── local_evaluator.py                    # 本地端自動化評估主程式
+│   ├── compile_report.py                     # 報表生成腳本
+│   └── results/                              # 查詢結果與報表
+│       ├── hybrid_answers.json
+│       ├── graph_answers.json
+│       ├── okf_answers.json
+│       └── benchmark_results_v2.csv
+├── docs/                                     # 文件與 Markdown 報表
+│   └── benchmark_v2_report.md
+├── archive/                                  # 歷史備份與過渡檔案 (已被 .gitignore 排除)
+├── requirements.txt
+├── README.md
+└── README_EN.md
 ```
 
 ## 🛠️ 環境建置 (Environment Setup)

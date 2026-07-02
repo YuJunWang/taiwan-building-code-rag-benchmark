@@ -38,8 +38,8 @@ embeddings = HuggingFaceEmbeddings(model_name="BAAI/bge-m3")
 # 2. 載入 Hybrid RAG 資料庫
 # ==========================================
 print("載入 Hybrid RAG 向量庫與 BM25...")
-hybrid_db = Chroma(persist_directory="rag_hybrid_export/chroma_db", embedding_function=embeddings)
-with open("rag_hybrid_export/bm25_retriever.pkl", "rb") as f:
+hybrid_db = Chroma(persist_directory="../data/databases/rag_hybrid_export/chroma_db", embedding_function=embeddings)
+with open("../data/databases/rag_hybrid_export/bm25_retriever.pkl", "rb") as f:
     bm25_retriever = pickle.load(f)
 
 def retrieve_hybrid_rag(query):
@@ -63,8 +63,8 @@ def retrieve_hybrid_rag(query):
 # 3. 載入 Graph RAG 資料庫
 # ==========================================
 print("載入 Graph RAG 圖譜與實體向量庫...")
-G = nx.read_graphml("graph_rag_hybrid_export/graph_rag_export.graphml")
-entity_db = Chroma(persist_directory="graph_rag_hybrid_export/graph_entity_chroma_db", embedding_function=embeddings)
+G = nx.read_graphml("../data/databases/graph_rag_hybrid_export/graph_rag_export.graphml")
+entity_db = Chroma(persist_directory="../data/databases/graph_rag_hybrid_export/graph_entity_chroma_db", embedding_function=embeddings)
 
 def retrieve_graph_rag(query):
     start_time = time.time()
@@ -108,7 +108,7 @@ def retrieve_okf_wiki(query):
     
     file_scores = []
     
-    all_files = glob.glob("okf_knowledge/**/*.md", recursive=True)
+    all_files = glob.glob("../data/databases/okf_knowledge/**/*.md", recursive=True)
     
     for file_path in all_files:
         try:
@@ -173,6 +173,6 @@ for i, q in enumerate(QUESTIONS):
 
 # 輸出報告
 df = pd.DataFrame(results)
-df.to_csv("benchmark_results_v2.csv", index=False, encoding="utf-8-sig")
-print("\n[OK] 評估完成！結果已儲存為 benchmark_results_v2.csv")
+df.to_csv("results/benchmark_results_v2.csv", index=False, encoding="utf-8-sig")
+print("\n[OK] 評估完成！結果已儲存為 results/benchmark_results_v2.csv")
 print("您現在可以檢視 CSV 檔案，比較兩者撈出的法規上下文 (Context) 準確度。")
