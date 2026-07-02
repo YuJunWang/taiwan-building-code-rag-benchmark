@@ -1,3 +1,5 @@
+**繁體中文** | [English](README_EN.md)
+
 # LLM Knowledge Retrieval Benchmark: RAG vs. Graph RAG vs. OKF-Wiki
 
 這是一個針對台灣《建築技術規則建築設計施工編》所建立的進階 AI 知識檢索架構比較專案。
