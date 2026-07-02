@@ -2,13 +2,15 @@ import json
 import random
 import os
 
-with open('evaluation_questions.json', encoding='utf-8') as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+with open(os.path.join(BASE_DIR, 'evaluation_questions.json'), encoding='utf-8') as f:
     contexts = json.load(f)
-with open('results/hybrid_answers.json', encoding='utf-8') as f:
+with open(os.path.join(BASE_DIR, 'results/hybrid_answers.json'), encoding='utf-8') as f:
     hybrid_ans = json.load(f)
-with open('results/graph_answers.json', encoding='utf-8') as f:
+with open(os.path.join(BASE_DIR, 'results/graph_answers.json'), encoding='utf-8') as f:
     graph_ans = json.load(f)
-with open('results/okf_answers.json', encoding='utf-8') as f:
+with open(os.path.join(BASE_DIR, 'results/okf_answers.json'), encoding='utf-8') as f:
     okf_ans = json.load(f)
 
 md_content = """# 🏆 V2 架構 Benchmark 15題全量測試報告 (Two-Stage RAG)
@@ -92,7 +94,8 @@ for idx, row in enumerate(contexts):
         
     md_content += "---\n\n"
 
-with open("../docs/benchmark_v2_report.md", "w", encoding="utf-8") as f:
+report_path = os.path.join(os.path.dirname(BASE_DIR), "docs", "benchmark_v2_report.md")
+with open(report_path, "w", encoding="utf-8") as f:
     f.write(md_content)
 
 print("Report compiled successfully!")
