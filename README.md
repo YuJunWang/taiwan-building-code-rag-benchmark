@@ -120,7 +120,7 @@ uv pip install -r requirements.txt
 1. **基礎設施**
    *   Embedding Model：採用 `BAAI/bge-m3` 處理繁體中文法規。
    *   Vector DB：採用 `Chroma` 進行向量儲存。
-   *   LLM：答案提取階段與 OKF Agent 推理階段皆使用 `gpt-4o-mini` (或同等級輕量模型)。
+   *   LLM：答案提取階段與 OKF Agent 推理階段皆使用 **Google Gemini (Advanced Agentic AI)** 作為底層模型。
 
 2. **各架構檢索參數 (Retrieval Parameters)**
    *   **🟢 Hybrid RAG**
