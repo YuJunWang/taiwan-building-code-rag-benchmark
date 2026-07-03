@@ -209,3 +209,25 @@ uv pip install -r requirements.txt
 3. **OKF LLM Wiki** 高度還原人類翻書邏輯，搭配 MOC 目錄，極度擅長「跨章節尋找大意」或「有明確主題域的全局總結」。
 
 ---
+
+## 🔮 未來展望：OKF 架構的進化藍圖 (Future Vision)
+
+本次 Benchmark 驗證了 OKF (Open Knowledge Format) 在「全局理解」與「跨條文推論」上的壓倒性優勢，證明了讓 Agent 讀取無損的 Markdown 完整檔案與 MOC (Map of Content) 目錄，能徹底解決傳統 RAG 破碎上下文的問題。
+
+然而，純 Agent 導航仍面臨檢索速度較慢、Token 消耗較高的挑戰。為了將 OKF 的效益極大化，未來可針對以下四個維度進行增強，使其從「靜態檔案庫」進化為「會自我生長的神經網路大腦」：
+
+1. **導入雙向連結 (Wiki-Style Hyperlinking) 🔗**
+   * **概念**：如同 Obsidian 或 Wikipedia，在 Markdown 內文中直接標註關聯法規的超連結（如：`依據 [第十一條](第一章/第11條.md) 辦理`）。
+   * **效益**：Agent 閱讀到連結時，無須退回根目錄搜尋，可直接呼叫工具瞬間跳轉。這能將跨章節檢索的時間從十幾秒壓縮至 1 秒內，實現高速的神經突觸跳轉。
+
+2. **OKF + Vector 混合動力 (雙引擎啟動) 🚀**
+   * **概念**：結合傳統 Vector Search 的「快」與 OKF 的「準」。
+   * **效益**：當接收到提問時，先以毫秒級的向量檢索找出 Top-1 的實體 Markdown 檔案路徑作為「空投座標」，直接交給 Agent 作為起點。Agent 藉此省去前期閱讀目錄的摸索時間，直接進入高階邏輯驗證與跳轉階段。
+
+3. **Frontmatter 屬性標籤化 (Metadata Graph) 🏷️**
+   * **概念**：利用現有的 YAML Frontmatter（如 `tags:`, `related_articles:`），在背景建立輕量級的屬性圖譜 (Property Graph)。
+   * **效益**：讓 Agent 擁有上帝視角，能透過工具瞬間取得特定標籤的檔案清單，以極低成本白嫖 Graph RAG 的拓樸能力，且無須維護昂貴的圖資料庫。
+
+4. **經驗沉澱與自我生長 (Agentic Memory & Distillation) 🧠**
+   * **概念**：當 Agent 經歷複雜的跨章節推論並成功解答後（例如耗時 30 秒統整了高層建築的消防規範），自動將該推論結果生成為一份 `FAQ_高層建築消防總結.md`，並存回 OKF 系統中。
+   * **效益**：**讓系統越用越聰明、越用越快**。未來遇到類似問題時，Agent 在閱讀目錄時便能直接發現這份 FAQ 檔案，實現 O(1) 的極速回覆（Knowledge Distillation）。
