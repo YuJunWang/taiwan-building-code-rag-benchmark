@@ -16,7 +16,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 # 全域 Tag 收集器
 global_tags = {}
 
-# (請在 Colab 另外開一個儲存格安裝套件)
+# (請在 Colab 另外開一個儲存格安裝套件: pip install transformers bitsandbytes accelerate opencc-python-reimplemented pyyaml)
 
 # === 1. 載入模型 (使用 bitsandbytes 進行 4-bit 量化以節省 VRAM) ===
 model_id = "Qwen/Qwen2.5-7B-Instruct"
@@ -52,7 +52,15 @@ def generate_text(prompt, max_new_tokens=256):
         output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
     ]
     
-    return tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
+    raw_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0].strip()
+    
+    # 方案 B：使用 OpenCC 將簡體強制轉為台灣繁體（包含常用語彙修正）
+    try:
+        from opencc import OpenCC
+        cc = OpenCC('s2twp')
+        return cc.convert(raw_text)
+    except ImportError:
+        return raw_text
 
 # === 2. 階段二：處理單一法規的 Summary 與 Tags ===
 def process_article(filepath):
