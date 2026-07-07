@@ -97,11 +97,13 @@ def retrieve_graph_rag(query):
     return context, latency
 
 # ==========================================
-# 4. 模擬 OKF LLM Wiki (Agent Tool)
+# 4. 模擬 OKF LLM Wiki (Bigram 本地端快速模擬)
+# ------------------------------------------
+# 注意：此函式為本地端【Bigram 遆近匹配】的模擬版本，
+# 用於快速產生可比較的 Context。
+# 真實的 Agentic 檢索結果（導航 SKILL + view_file + list_dir）
+# 請參照： benchmark/results/okf_agent_answers.json
 # ==========================================
-import glob
-import re
-
 def retrieve_okf_wiki(query):
     start_time = time.time()
     

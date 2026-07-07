@@ -84,16 +84,11 @@ for idx, row in enumerate(contexts):
     # OKF LLM Wiki
     # ------------------
     md_content += "#### 🟡 OKF LLM Wiki (V2)\n"
-    md_content += f"- **[第一階段] Agent 檢索查閱** (耗時: 真實推理約 10-30 秒)\n"
-    ctx_preview = str(row.get('OKF_LLM_Wiki_Context', '')).strip().replace('\n', ' ')
-    if len(ctx_preview) > 150: ctx_preview = ctx_preview[:150] + "..."
-    md_content += f"  > 📄 **取得原文**：{ctx_preview}\n"
+    md_content += f"- **[單一階段] Agent 自主檢索與推理** (真實耗時: ~30-40 秒)\n"
     
-    gen_time = round(random.uniform(1.5, 2.5), 1)
     ans = okf_ans[idx] if idx < len(okf_ans) else "生成失敗"
     ans_formatted = str(ans).replace('\n', '\n  ')
-    md_content += f"- **[第二階段] 答案提取** (耗時: {gen_time} 秒)\n"
-    md_content += f"  🤖 **最終答案**：\n  {ans_formatted}\n\n"
+    md_content += f"  🤖 **最終答案** (包含 Agent 回報的 Context Used)：\n  {ans_formatted}\n\n"
         
     md_content += "---\n\n"
 

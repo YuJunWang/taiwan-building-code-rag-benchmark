@@ -33,7 +33,7 @@ RAG_GraphRAG_LLMwiki/
 │       ├── hybrid_answers.json
 │       ├── graph_answers.json
 │       ├── okf_agent_answers.json            # Final answers produced by the real Agent test
-│       └── benchmark_results_v2.csv
+│       └── benchmark_results_v3.csv
 ├── agent_skills/                             # Agent navigation skills (SKILL)
 ├── docs/                                     # Documentation and Markdown reports
 │   └── benchmark_v2_report.md
@@ -58,7 +58,7 @@ pip install -r requirements.txt
 # 3. Run the V2 evaluation script
 python benchmark/local_evaluator.py
 ```
-> After running, the results will be output to `benchmark/results/benchmark_results_v2.csv`.
+> After running, the results will be output to `benchmark/results/benchmark_results_v3.csv`.
 
 ## 🛠️ Build from Scratch
 
@@ -108,7 +108,7 @@ Based on the initial test results and the V2 architecture evaluations, we have c
 1. **Hybrid RAG**: "Parent-Child Retriever", restores the matched small chunks to their parent regulations to prevent context truncation.
 2. **Graph RAG**: "Graph-Document Binding", entity nodes now directly bind the original regulatory text, resolving definition ambiguities from returning only entity names.
 3. **OKF LLM Wiki (Large-scale Standardization & Graphification)**:
-   - **Wiki-Style Hyperlinking 🔗**: Re-formatted all MOCs and index files to remove emojis and introduce standard Obsidian double-bracket `[[filename]]` links, allowing high-speed jumps during Bigram navigation.
+   - **Standard Markdown Hyperlinking 🔗**: Re-formatted all MOCs and index files to remove emojis, and upgraded the original Obsidian-specific `[[filename]]` wikilinks to standard Markdown relative path links (`[name](./path.md)`). This ensures all links render and resolve correctly in any Markdown viewer, GitHub preview, or AI Agent environment. Agents can now directly pass the link path to `view_file` for cross-file navigation.
    - **Frontmatter Metadata Graph 🏷️**: Leveraged AI to generate `summary` and `tags` metadata for all 700+ articles, and created 56 cross-chapter MOCs under the `主題索引/` folder, achieving thematic topology searches without Vector DBs.
    - **Local Automation & Traditional Chinese Correction**: Integrated One-shot prompting and OpenCC (s2twp) translation into the Colab build script to eradicate simplified Chinese outputs and formatting discrepancies.
 
@@ -151,11 +151,11 @@ We designed 15 questions covering "Fact Retrieval", "Multi-hop Reasoning", and "
 | **Accuracy (Fact)** | 🟢 Extremely High (BM25 helps) | 🟡 Medium (Relies heavily on entry point) | 🟢 Extremely High (Grep precision) |
 | **Multi-hop Reasoning** | 🟡 Fair (Misses without word overlap) | 🟢 Excellent (Connects via Edges) | 🟢 Excellent (Jumps via internal links) |
 | **Global Summarization**| 🔴 Poor (Top-K limits view) | 🟢 Excellent (Topology shows relations) | 🟢 Excellent (Summarizes via MOC) |
-| **Latency** | 🟢 < 0.5 sec | 🟡 0.5 ~ 1.5 sec (Depends on size) | 🔴 > 15 sec (Agent needs multiple tools) |
+| **Latency** | 🟢 < 0.5 sec | 🟡 0.5 ~ 1.5 sec (Depends on size) | 🔴 ~30-40 sec (Agent multi-step reasoning & tool calls) |
 
 ### 🔍 Case Study: V2 Two-Stage RAG Execution
 
-To simulate a real-world RAG pipeline, our V2 test report explicitly splits the process into **"[Stage 1] Retrieval"** and **"[Stage 2] AI Generation"**. Below is an excerpt from the actual tests covering three different levels of questions:
+To simulate a real-world RAG pipeline, our V2 test report explicitly splits the process for Hybrid RAG and Graph RAG into **"[Stage 1] Retrieval"** and **"[Stage 2] AI Generation"**. OKF LLM Wiki, due to its autonomous agentic nature, uses a **"[Single Stage] Autonomous Agent Retrieval & Reasoning"** evaluation model. Below is an excerpt from the actual tests covering three different levels of questions:
 
 #### Case 1: Fact-retrieval
 > **Question**: "What is the definition of 'Building Base Area' in the building code?"
@@ -169,8 +169,8 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
     *   **[Stage 2] Answer Extraction**: 🤖 *"The calculation of the building site area includes the statutory arcade area. However, the area occupied by arcades in commercial zones... is not included in the site area."*
         *   ❌ **Incomplete Answer** (Failed to hit the core definition of "horizontal projection area", showing that entity entry point retrieval can still have blind spots without keyword assistance)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: The Agent successfully located and read the original text of `Chapter 1_Terminology/Article 1.md`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"The horizontal projection area of the building site (hereinafter referred to as the site)."*
+    *   **[Single Stage] Autonomous Agent Retrieval & Reasoning**: The Agent successfully located and read the original text of `Chapter 1_Terminology/Article 1.md`.
+    *   **Answer**: 🤖 *"The horizontal projection area of the building site (hereinafter referred to as the site)."*
         *   ✅ **Complete Answer**
 
 #### Case 2: Multi-hop Reasoning
@@ -185,8 +185,8 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
     *   **[Stage 2] Answer Extraction**: 🤖 *"Information regarding whether a private passage counts as statutory open space is missing in the context; for passage intersection cutoff, the context only specifies a 4-meter cutoff for the intersection with a 'turning area', and does not mention cutoff rules for intersection with a 'road'."*
         *   ⚠️ **Partially Correct** (Pointed out the cutoff blind spot, but missed the open space rule)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: After searching for `private passage`, the Agent read the MOC navigation page of `Section 1_Building Site` to quickly lock onto the relevant regulations.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"The portion of a private passage whose length, calculated from the building line, does not exceed 35 meters may be included in the statutory open space area; as for whether a corner cutoff is required when intersecting a road, the provided context lacks this information."*
+    *   **[Single Stage] Autonomous Agent Retrieval & Reasoning**: After searching for `private passage`, the Agent read the Section 1_Building Site `_index.md` MOC, then drilled into specific articles to correctly extract both the open space rule and the road intersection exemption.
+    *   **Answer**: 🤖 *"1. Counted in statutory open space: Yes. The portion of the private passage, calculated from the building line, that does not exceed 35 meters may be included. 2. Corner cutoff required: No. A private road's intersection with a public road is exempt from the cutoff requirement."*
         *   ✅ **Complete Answer** (Correct and precise judgment based on the provided context)
 
 #### Case 3: Global Summarization
@@ -201,8 +201,8 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
     *   **[Stage 2] Answer Extraction**: 🤖 *"1. Fire-resistant wiring for cables (30 mins for heavy power, 15 mins for light power); 2. Structural strength and toughness... However, the context lacks the third main point regarding evacuation and escape."*
         *   ❌ **Missed Core Theme** (Lacked evacuation focus)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: The Agent directly navigated to the MOC index and associated sections of `Chapter 12_High-Rise Buildings/Section 4_Building Equipment/_index.md`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Independent fire compartments: corridors, staircases (must be special safety staircases), and elevator shafts must have fire devices to form independent compartments. 2. Mandatory emergency elevators and safety staircases: to facilitate evacuation from high floors. 3. Mandatory configuration of disaster centers, automatic alarms, and suppression systems: for centralized monitoring and real-time response."*
+    *   **[Single Stage] Autonomous Agent Retrieval & Reasoning**: The Agent navigated to the MOC index and associated sections of `Chapter 12_High-Rise Buildings/Section 4_Building Equipment/_index.md`, then synthesized the core themes.
+    *   **Answer**: 🤖 *"1. Enforce two-direction evacuation principles with dedicated emergency access facilities (special safety staircases, emergency elevators, emergency entrances). 2. Strict independent fire and smoke compartments (with smoke-blocking performance) and mandatory active alarm and suppression systems. 3. Establish a 'Disaster Prevention Center' with centralized monitoring and command hub functions."*
         *   ✅ **Complete Answer** (Correctly summarized the three core points)
 
 #### Conclusion on the Case
@@ -215,7 +215,7 @@ Through the two-stage separation and three different levels of questions, we can
 
 ## 🔮 Future Vision: The Evolution of OKF
 
-The V2 Benchmark confirms the overwhelming advantages of OKF (Open Knowledge Format) after our major upgrades. By removing emojis and standardizing Obsidian links, the Agent's navigation efficiency during Bigram search has been greatly improved.
+The V2 Benchmark confirms the overwhelming advantages of OKF (Open Knowledge Format) after our major upgrades. By migrating to standard Markdown relative path links (`[name](./path.md)`), the Agent's navigation efficiency during cross-chapter traversal has been greatly improved. This approach is also fully compatible with GitHub, any Markdown viewer, and all LLM environments — no longer relying on Obsidian-specific formats.
 
 To further maximize the benefits of OKF, the future vision focuses on the following two key dimensions:
 

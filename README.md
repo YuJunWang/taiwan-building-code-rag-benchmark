@@ -33,7 +33,7 @@ RAG_GraphRAG_LLMwiki/
 │       ├── hybrid_answers.json
 │       ├── graph_answers.json
 │       ├── okf_agent_answers.json            # 真實 Agent 測試產出的最終答案
-│       └── benchmark_results_v2.csv
+│       └── benchmark_results_v3.csv
 ├── agent_skills/                             # 存放 Agent 導航技能 (SKILL) 檔案
 ├── docs/                                     # 文件與 Markdown 報表
 │   └── benchmark_v2_report.md
@@ -58,7 +58,7 @@ pip install -r requirements.txt
 # 3. 直接執行 V2 評估腳本
 python benchmark/local_evaluator.py
 ```
-> 執行後，結果將輸出至 `benchmark/results/benchmark_results_v2.csv`。
+> 執行後，結果將輸出至 `benchmark/results/benchmark_results_v3.csv`。
 
 ## 🛠️ 資料庫建置 (Build from Scratch)
 
@@ -108,7 +108,7 @@ uv pip install -r requirements.txt
 1. **Hybrid RAG**：導入「父子文件檢索 (Parent-Child Retriever)」，將切片還原為完整的法規母條文，避免脈絡被截斷。
 2. **Graph RAG**：導入「圖譜與原文綁定 (Graph-Document Binding)」，將實體節點直接綁定原始條文，有效解決以往 Graph RAG 單純回傳實體名詞而導致的定義模糊問題。
 3. **OKF LLM Wiki (大規模標準化與圖譜化)**：
-   - **Wiki 式雙向連結 (Wiki-Style Hyperlinking) 🔗**：全面將目錄 MOC 與章節索引改版，去除表情符號並導入 Obsidian 標準雙括弧 `[[filename]]` 語法，使 Agent 在做 Bigram 檢索時能快速進行章節間跳轉。
+   - **Wiki 式標準 Markdown 雙向連結 (Standard Markdown Hyperlinking) 🔗**：全面將目錄 MOC 與章節索引改版，去除表情符號，並將原本的 Obsidian 專屬 `[[filename]]` 語法，統一升級為標準 Markdown 相對路徑連結格式 `[name](./path.md)`。此舉確保在任何 Markdown viewer、GitHub 預覽與 AI Agent 環境下均能正確解析並跳轉，Agent 可直接對連結路徑呼叫 `view_file` 進行跨檔案比對。
    - **Frontmatter 屬性標籤化與主題圖譜 🏷️**：利用 AI 全量為 700+ 個法規檔案寫入 `summary` 與 `tags` 元數據，並在 `主題索引/` 目錄中建立 56 個跨章節主題導覽，實現不依賴向量庫的主題拓樸檢索。
    - **本地端自動化與繁體字校正**：導入 Colab 建置指令的一鍵執行，結合 OpenCC s2twp 繁體化與 One-Shot 範例引導，徹底解決模型容易輸出簡體字與格式不一致的痛點。
 
@@ -151,11 +151,11 @@ uv pip install -r requirements.txt
 | **檢索精準度 (事實)** | 🟢 極高 (BM25 神助攻) | 🟡 中 (高度依賴入口節點抓取) | 🟢 極高 (Grep 精準打擊) |
 | **跨文件推理能力** | 🟡 尚可 (若無重疊字詞易漏接) | 🟢 優秀 (透過 Edge 連結不同法規) | 🟢 優秀 (透過內部連結跳躍) |
 | **全局總結能力** | 🔴 差 (Top-K 限制導致見樹不見林) | 🟢 優秀 (拓樸結構直接呈現關聯) | 🟢 優秀 (透過 MOC 目錄總結) |
-| **查詢延遲 (Latency)** | 🟢 < 0.5 秒 | 🟡 0.5 ~ 1.5 秒 (取決於圖譜大小) | 🔴 > 15 秒 (Agent 需逐步使用工具) |
+| **查詢延遲 (Latency)** | 🟢 < 0.5 秒 | 🟡 0.5 ~ 1.5 秒 (取決於圖譜大小) | 🔴 ~30-40 秒 (Agent 多步推理與工具呼叫) |
 
 ### 🔍 實際案例解析：V2 雙階段 RAG 實測 (Case Study)
 
-為了符合真實世界的 RAG 運作邏輯，我們的 V2 測試報告將流程明確切割為**「[第一階段] 檢索查閱」**與**「[第二階段] AI 答案提取」**。以下截取自真實測試紀錄的三個不同層次問題：
+為了符合真實世界的 RAG 運作邏輯，V2 測試報告針對 Hybrid RAG 與 Graph RAG 採用**「[第一階段] 檢索查閱」**與**「[第二階段] AI 答案提取」**的兩階段切割；OKF LLM Wiki 則因為 Agent 的自主推理特性，採用**「[單一階段] Agent 自主檢索與推理」**的評估方式。以下截取自真實測試紀錄的三個不同層次問題：
 
 #### 案例一：事實定義檢索 (Fact-retrieval)
 > **問題**：「請問建築技術規則中，對於『建築基地面積』的定義是什麼？」
@@ -169,8 +169,8 @@ uv pip install -r requirements.txt
     *   **[第二階段] 答案提取**：🤖 *「建築基地面積之計算包括法定騎樓面積。但商業區之法定騎樓，或住宅區面臨十五公尺以上道路之法定騎樓所占面積，不計入基地面積。」*
         *   ❌ **回答不完整** (未命中「水平投影面積」的基礎定義，顯示實體入口檢索在沒有關鍵字權重神助攻時仍有盲點)
 *   **🟡 OKF LLM Wiki**
-    *   **[第一階段] Agent 檢索查閱**：Agent 成功定位並查閱 `第一章_用語定義/第1條.md` 原文。
-    *   **[第二階段] 答案提取**：🤖 *「建築基地（以下簡稱基地）之水平投影面積。」*
+    *   **[單一階段] Agent 自主檢索與推理**：Agent 成功定位並查閱 `第一章_用語定義/第1條.md` 原文。
+    *   **答案提取**：🤖 *「建築基地（以下簡稱基地）之水平投影面積。」*
         *   ✅ **完整回答**
 
 #### 案例二：跨條文關聯推論 (Multi-hop Reasoning)
@@ -185,8 +185,8 @@ uv pip install -r requirements.txt
     *   **[第二階段] 答案提取**：🤖 *「Context 中缺乏關於「私設通路是否計入法定空地」的資訊；對於通路交叉截角，Context 僅規定「通路與迴車道交叉口」之截角長度為 4 公尺，並未提及私設通路與「道路」交叉時的截角規定。」*
         *   ⚠️ **部分正確** (指出截角盲點，但未回答法定空地)
 *   **🟡 OKF LLM Wiki**
-    *   **[第一階段] Agent 檢索查閱**：Agent 搜尋 `私設通路` 後，讀取 `第一節_建築基地/_index.md` 導覽頁快速鎖定關聯法規。
-    *   **[第二階段] 答案提取**：🤖 *「私設通路長度自建築線起算未超過 35 公尺部分得計入法定空地面積；至於該通路與道路交叉是否需要截角，提供之 Context 缺乏此資訊。」*
+    *   **[單一階段] Agent 自主檢索與推理**：Agent 搜尋 `私設通路` 後，查閱 `第一節_建築基地/_index.md` 與具體條文，正確抓出但書與截角豁免條款。
+    *   **答案提取**：🤖 *「1. 是否計入法定空地：可以。依據規定，私設通路長度自建築線起算「未超過35公尺」的部分得計入。2. 是否需要截角：不需要。私設通路與道路之交叉口免截角。」*
         *   ✅ **完整回答** (在所給 Context 下給出精準判斷)
 
 #### 案例三：全局總結 (Global Summarization)
@@ -201,8 +201,8 @@ uv pip install -r requirements.txt
     *   **[第二階段] 答案提取**：🤖 *「1. 防災設備之強電電線電纜應具備30分鐘以上、弱電應具備15分鐘以上之防火時效；2. 建築物結構應具備要求強度與足夠韌性。然而，Context 中缺乏關於逃生避難等防災設計之第三個主要重點。」*
         *   ❌ **未命中核心主軸** (缺乏逃生避難重點)
 *   **🟡 OKF LLM Wiki**
-    *   **[第一階段] Agent 檢索查閱**：Agent 直接導航至 `第十二章_高層建築物/第四節_建築設備/_index.md` 目錄與關聯章節。
-    *   **[第二階段] 答案提取**：🤖 *「一、設置獨立防火區劃，走廊、直通樓梯（須為特別安全梯）與昇降機間皆需設防火裝置形成獨立防火區；二、強制設置緊急用昇降機與多座特別安全梯，以利高樓層之避難逃生；三、強制配置防災中心、自動火警警報及自動滅火裝置，以集中監控並即時防災。」*
+    *   **[單一階段] Agent 自主檢索與推理**：Agent 導航至 `第十二章_高層建築物/第四節_建築設備/_index.md` 與周邊目錄，綜合歸納出核心主軸。
+    *   **答案提取**：🤖 *「1. 落實二方向避難原則與專用緊急進出設施（如特別安全梯、緊急昇降機、緊急進口）。 2. 嚴格的獨立防火、防煙區劃（具遮煙性能）與強制設置主動警報滅火系統。 3. 設立具備集中監控與指揮樞紐功能的「防災中心」。」*
         *   ✅ **完整回答** (正確歸納三大核心重點)
 
 #### 案例分析結論
@@ -215,7 +215,7 @@ uv pip install -r requirements.txt
 
 ## 🔮 未來展望：OKF 架構的進化藍圖 (Future Vision)
 
-本次 V2 Benchmark 驗證了 OKF (Open Knowledge Format) 在大改版後所帶來的「全局理解」與「跨條文推論」上的優勢。透過 MOC 與無表情符號的雙向連結，Agent 在做 Bigram 導航時的效率獲得顯著提升。
+本次 V2 Benchmark 驗證了 OKF (Open Knowledge Format) 在大改版後所帶來的「全局理解」與「跨條文推論」上的優勢。透過 MOC 與標準 Markdown 相對路徑連結（`[name](./path.md)`），Agent 在做跨章節導航時的效率獲得顯著提升，且相容於 GitHub、任意 Markdown viewer 及所有 LLM 環境，不再依賴 Obsidian 專屬格式。
 
 為了將 OKF 的效益進一步極大化，未來的進化方向將專注於以下兩大核心維度：
 

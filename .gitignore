@@ -43,3 +43,7 @@ ehthumbs.db
 Thumbs.db
 
 archive/
+
+# Scratch/temp working files (local pipeline intermediates)
+scratch/
+all_contexts.json

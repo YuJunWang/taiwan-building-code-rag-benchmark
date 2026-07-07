@@ -177,7 +177,7 @@ def process_article(filepath):
     return metadata.get('summary', ''), metadata.get('tags', [])
 
 # === 3. 階段三：建立 MOC (Map of Content) 索引 ===
-def process_directory(dirpath):
+def process_directory(dirpath, root_dir):
     print(f"Building MOC for directory: {dirpath}")
     subdirs = []
     articles = []
@@ -203,7 +203,9 @@ def process_directory(dirpath):
                 if tag not in global_tags:
                     global_tags[tag] = []
                 # 紀錄完整的跨章節路徑
-                rel_path = os.path.join(os.path.basename(dirpath), item)
+                rel_path = os.path.relpath(item_path, root_dir)
+                # Ensure forward slashes for markdown links
+                rel_path = rel_path.replace('\\', '/')
                 global_tags[tag].append(rel_path)
                 
             if summary:
@@ -277,7 +279,8 @@ folder: "{os.path.basename(dirpath)}"
     if subdirs:
         index_content += "\n## 子目錄\n"
         for sd in sorted(subdirs):
-            index_content += f"- [[{sd}]]\n"
+            # 使用標準 Markdown 連結，確保跨平台相容性（非 Obsidian 專屬 [[]] 格式）
+            index_content += f"- [{sd}](./{sd}/_index.md)\n"
 
     if articles:
         index_content += "\n## 包含條文\n"
@@ -290,7 +293,8 @@ folder: "{os.path.basename(dirpath)}"
         sorted_articles = sorted(articles, key=get_num_key)
         for filename, summary in sorted_articles:
             title = filename.replace('.md', '')
-            index_content += f"- [[{title}]]: {summary}\n"
+            # 使用標準 Markdown 連結，確保 Agent 可直接定位並呼叫 view_file
+            index_content += f"- [{title}](./{filename}): {summary}\n"
 
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index_content)
@@ -307,7 +311,7 @@ def main():
     for root, dirs, files in os.walk(root_dir, topdown=False):
         if "主題索引" in root:
             continue
-        process_directory(root)
+        process_directory(root, root_dir)
             
     # 建立主題式 MOC
     print("正在建立跨章節的主題式 MOC (Thematic Indexes)...")
@@ -321,8 +325,10 @@ def main():
             theme_path = os.path.join(themes_dir, f"_theme_{tag}.md")
             content = f"---\ntype: \"theme_moc\"\ntag: \"{tag}\"\n---\n# 主題：{tag}\n\n## 相關法規連結\n"
             for f in files:
-                # 建立 Obsidian 格式的內部跨章節連結
-                content += f"- [[{f.replace('.md', '')}]]\n"
+                # 使用標準 Markdown 連結（相對路徑，從 themes_dir 往上一層參照）
+                link_name = os.path.basename(f).replace('.md', '')
+                rel_from_themes = os.path.join('..', f).replace('\\', '/')
+                content += f"- [{link_name}]({rel_from_themes})\n"
             
             with open(theme_path, 'w', encoding='utf-8') as out:
                 out.write(content)
