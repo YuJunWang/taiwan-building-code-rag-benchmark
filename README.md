@@ -34,7 +34,6 @@ RAG_GraphRAG_LLMwiki/
 │       ├── graph_answers.json
 │       ├── okf_agent_answers.json            # 真實 Agent 測試產出的最終答案
 │       └── benchmark_results_v3.csv
-├── agent_skills/                             # 存放 Agent 導航技能 (SKILL) 檔案
 ├── docs/                                     # 文件與 Markdown 報表
 │   └── benchmark_v2_report.md
 ├── archive/                                  # 歷史備份與過渡檔案 (已被 .gitignore 排除)

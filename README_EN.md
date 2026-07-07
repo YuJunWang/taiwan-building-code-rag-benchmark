@@ -34,7 +34,6 @@ RAG_GraphRAG_LLMwiki/
 │       ├── graph_answers.json
 │       ├── okf_agent_answers.json            # Final answers produced by the real Agent test
 │       └── benchmark_results_v3.csv
-├── agent_skills/                             # Agent navigation skills (SKILL)
 ├── docs/                                     # Documentation and Markdown reports
 │   └── benchmark_v2_report.md
 ├── archive/                                  # Historical and temp files (gitignored)
