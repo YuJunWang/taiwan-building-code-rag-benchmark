@@ -104,10 +104,13 @@ uv pip install -r requirements.txt
 
 ## 🚀 V2 架構升級重點與成果 (V2 Enhancements)
 
-根據初期的實測結果，我們已在最新的 V2 資料庫中完成了架構升級：
-1. **Hybrid RAG**：導入「父子文件檢索 (Parent-Child Retriever)」，綁定完整法規脈絡。
-2. **Graph RAG**：導入「圖譜與原文綁定 (Graph-Document Binding)」，節點自帶法條全文。
-3. **OKF LLM Wiki**：導入「Bigram 檢索與主題式 MOC」，強化 Agent 的跨章節搜尋能力。
+根據初期的實測與 V2 架構評估，我們已在最新版本中實作了以下升級：
+1. **Hybrid RAG**：導入「父子文件檢索 (Parent-Child Retriever)」，將切片還原為完整的法規母條文，避免脈絡被截斷。
+2. **Graph RAG**：導入「圖譜與原文綁定 (Graph-Document Binding)」，將實體節點直接綁定原始條文，有效解決以往 Graph RAG 單純回傳實體名詞而導致的定義模糊問題。
+3. **OKF LLM Wiki (大規模標準化與圖譜化)**：
+   - **Wiki 式雙向連結 (Wiki-Style Hyperlinking) 🔗**：全面將目錄 MOC 與章節索引改版，去除表情符號並導入 Obsidian 標準雙括弧 `[[filename]]` 語法，使 Agent 在做 Bigram 檢索時能快速進行章節間跳轉。
+   - **Frontmatter 屬性標籤化與主題圖譜 🏷️**：利用 AI 全量為 700+ 個法規檔案寫入 `summary` 與 `tags` 元數據，並在 `主題索引/` 目錄中建立 56 個跨章節主題導覽，實現不依賴向量庫的主題拓樸檢索。
+   - **本地端自動化與繁體字校正**：導入 Colab 建置指令的一鍵執行，結合 OpenCC s2twp 繁體化與 One-Shot 範例引導，徹底解決模型容易輸出簡體字與格式不一致的痛點。
 
 > 👉 **[點此查看：15 題全量 V2 Benchmark 終極測試報告](docs/benchmark_v2_report.md)**
 
@@ -212,22 +215,14 @@ uv pip install -r requirements.txt
 
 ## 🔮 未來展望：OKF 架構的進化藍圖 (Future Vision)
 
-本次 Benchmark 驗證了 OKF (Open Knowledge Format) 在「全局理解」與「跨條文推論」上的壓倒性優勢，證明了讓 Agent 讀取無損的 Markdown 完整檔案與 MOC (Map of Content) 目錄，能徹底解決傳統 RAG 破碎上下文的問題。
+本次 V2 Benchmark 驗證了 OKF (Open Knowledge Format) 在大改版後所帶來的「全局理解」與「跨條文推論」上的優勢。透過 MOC 與無表情符號的雙向連結，Agent 在做 Bigram 導航時的效率獲得顯著提升。
 
-然而，純 Agent 導航仍面臨檢索速度較慢、Token 消耗較高的挑戰。為了將 OKF 的效益極大化，未來可針對以下四個維度進行增強，使其從「靜態檔案庫」進化為「會自我生長的神經網路大腦」：
+為了將 OKF 的效益進一步極大化，未來的進化方向將專注於以下兩大核心維度：
 
-1. **導入雙向連結 (Wiki-Style Hyperlinking) 🔗**
-   * **概念**：如同 Obsidian 或 Wikipedia，在 Markdown 內文中直接標註關聯法規的超連結（如：`依據 [第十一條](第一章/第11條.md) 辦理`）。
-   * **效益**：Agent 閱讀到連結時，無須退回根目錄搜尋，可直接呼叫工具瞬間跳轉。這能將跨章節檢索的時間從十幾秒壓縮至 1 秒內，實現高速的神經突觸跳轉。
-
-2. **OKF + Vector 混合動力 (雙引擎啟動) 🚀**
+1. **OKF + Vector 混合動力 (雙引擎啟動) 🚀**
    * **概念**：結合傳統 Vector Search 的「快」與 OKF 的「準」。
    * **效益**：當接收到提問時，先以毫秒級的向量檢索找出 Top-1 的實體 Markdown 檔案路徑作為「空投座標」，直接交給 Agent 作為起點。Agent 藉此省去前期閱讀目錄的摸索時間，直接進入高階邏輯驗證與跳轉階段。
 
-3. **Frontmatter 屬性標籤化 (Metadata Graph) 🏷️**
-   * **概念**：利用現有的 YAML Frontmatter（如 `tags:`, `related_articles:`），在背景建立輕量級的屬性圖譜 (Property Graph)。
-   * **效益**：讓 Agent 擁有上帝視角，能透過工具瞬間取得特定標籤的檔案清單，以極低成本白嫖 Graph RAG 的拓樸能力，且無須維護昂貴的圖資料庫。
-
-4. **經驗沉澱與自我生長 (Agentic Memory & Distillation) 🧠**
+2. **經驗沉澱與自我生長 (Agentic Memory & Distillation) 🧠**
    * **概念**：當 Agent 經歷複雜的跨章節推論並成功解答後（例如耗時 30 秒統整了高層建築的消防規範），自動將該推論結果生成為一份 `FAQ_高層建築消防總結.md`，並存回 OKF 系統中。
    * **效益**：**讓系統越用越聰明、越用越快**。未來遇到類似問題時，Agent 在閱讀目錄時便能直接發現這份 FAQ 檔案，實現 O(1) 的極速回覆（Knowledge Distillation）。

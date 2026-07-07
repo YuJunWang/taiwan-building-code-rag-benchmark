@@ -104,10 +104,13 @@ This project deliberately selects lightweight, open-source, and local-friendly f
 
 ## 🚀 V2 Enhancements
 
-Based on the initial test results, we have completed major architecture upgrades in the latest V2 database:
-1. **Hybrid RAG**: "Parent-Child Retriever", automatically restores the full regulatory context.
-2. **Graph RAG**: "Graph-Document Binding", nodes now carry the full original text.
-3. **OKF LLM Wiki**: "Bigram Retrieval & Thematic MOCs", greatly strengthening the Agent's cross-chapter search ability.
+Based on the initial test results and the V2 architecture evaluations, we have completed the following upgrades in the latest version:
+1. **Hybrid RAG**: "Parent-Child Retriever", restores the matched small chunks to their parent regulations to prevent context truncation.
+2. **Graph RAG**: "Graph-Document Binding", entity nodes now directly bind the original regulatory text, resolving definition ambiguities from returning only entity names.
+3. **OKF LLM Wiki (Large-scale Standardization & Graphification)**:
+   - **Wiki-Style Hyperlinking 🔗**: Re-formatted all MOCs and index files to remove emojis and introduce standard Obsidian double-bracket `[[filename]]` links, allowing high-speed jumps during Bigram navigation.
+   - **Frontmatter Metadata Graph 🏷️**: Leveraged AI to generate `summary` and `tags` metadata for all 700+ articles, and created 56 cross-chapter MOCs under the `主題索引/` folder, achieving thematic topology searches without Vector DBs.
+   - **Local Automation & Traditional Chinese Correction**: Integrated One-shot prompting and OpenCC (s2twp) translation into the Colab build script to eradicate simplified Chinese outputs and formatting discrepancies.
 
 > 👉 **[Click here: 15-Question Full V2 Benchmark Ultimate Test Report](docs/benchmark_v2_report.md)**
 
@@ -212,22 +215,14 @@ Through the two-stage separation and three different levels of questions, we can
 
 ## 🔮 Future Vision: The Evolution of OKF
 
-This benchmark has validated the overwhelming advantage of OKF (Open Knowledge Format) in "global understanding" and "cross-article inference". It proved that allowing Agents to read lossless complete Markdown files and MOCs (Maps of Content) fundamentally solves the fragmented context problem of traditional RAG.
+The V2 Benchmark confirms the overwhelming advantages of OKF (Open Knowledge Format) after our major upgrades. By removing emojis and standardizing Obsidian links, the Agent's navigation efficiency during Bigram search has been greatly improved.
 
-However, pure Agentic navigation still faces challenges such as slower retrieval speeds and higher Token consumption. To maximize the benefits of OKF, future enhancements can focus on the following four dimensions, evolving it from a "static archive" into a "self-growing neural network brain":
+To further maximize the benefits of OKF, the future vision focuses on the following two key dimensions:
 
-1. **Wiki-Style Hyperlinking (Networked Thought) 🔗**
-   * **Concept**: Similar to Obsidian or Wikipedia, embed direct hyperlinks to related regulations within the Markdown text (e.g., `in accordance with [Article 11](Chapter1/Article11.md)`).
-   * **Benefit**: When the Agent encounters a link, it can directly invoke a tool to jump instantly without returning to the root directory. This compresses cross-chapter search times from tens of seconds to under 1 second, enabling high-speed neural jumps.
-
-2. **Hybrid Power: OKF + Vector (Dual-Engine Start) 🚀**
+1. **Hybrid Power: OKF + Vector (Dual-Engine Start) 🚀**
    * **Concept**: Combine the "speed" of traditional Vector Search with the "accuracy" of OKF.
    * **Benefit**: Upon receiving a query, use millisecond-level vector search to find the Top-1 relevant Markdown file path as a "drop zone coordinate," passing it directly to the Agent. This skips the initial directory exploration phase, allowing the Agent to jump straight into high-level logical validation and navigation.
 
-3. **Frontmatter Metadata Graph 🏷️**
-   * **Concept**: Utilize existing YAML Frontmatter (like `tags:`, `related_articles:`) to build a lightweight Property Graph in the background.
-   * **Benefit**: Grants the Agent a god's-eye view, allowing it to instantly retrieve lists of files with specific tags via tools. This effectively provides the topological capabilities of Graph RAG at a fraction of the cost, without needing to maintain expensive graph databases.
-
-4. **Agentic Memory & Knowledge Distillation 🧠**
+2. **Agentic Memory & Knowledge Distillation 🧠**
    * **Concept**: When an Agent successfully answers a complex query after multi-hop reasoning (e.g., spending 30 seconds summarizing fire safety for high-rises), it automatically generates a new file like `FAQ_HighRiseFireSafety.md` and saves it back into the OKF system.
    * **Benefit**: **The system becomes smarter and faster the more it's used.** When similar questions arise in the future, the Agent spots this FAQ directly in the MOC, achieving O(1) response times (Knowledge Distillation).
