@@ -78,15 +78,26 @@ def process_article(filepath):
         
     print(f"Processing {metadata.get('title')}...")
     
-    # Prompt LLM 生成摘要與標籤
+    # Prompt LLM 生成摘要與標籤 (加入 One-Shot 範例與繁體中文強約束)
     prompt = f"""請閱讀以下建築技術規則條文，並提供：
 1. 一句話的核心摘要 (summary)
-2. 3到5個口語化關鍵字 (tags)，請用半形逗號分隔
+2. 3到5個口語化關鍵字 (tags)
 
-法規內容：
-{article_text[:1500]} # 避免超過 context window
+【重要指示】
+- 必須使用「繁體中文（台灣繁體）」回答，嚴禁使用簡體字。
+- 語意摘要請控制在 30-50 字之間，著重於法規的核心義務與規範主體。
 
-請嚴格以下列 JSON 格式輸出：
+【One-Shot 範例】
+輸入條文：
+第2條：建築基地應與建築線相連接，其連接部份之最小長度應在二公尺以上。基地內私設通路之寬度不得小於左列標準：一、長度未滿十公尺者為二公尺。二、長度在十公尺以上未滿二十公尺者為三公尺。三、長度大於二十公尺為五公尺...
+
+輸出 JSON：
+{{"summary": "規範建築基地與建築線連接之最小長度，以及基地內不同長度私設通路之寬度標準。", "tags": ["建築線", "私設通路", "通路寬度", "基地連接"]}}
+
+【本次輸入條文】
+{article_text[:1500]}
+
+請嚴格以下列 JSON 格式輸出，不要包含額外的說明文字：
 {{"summary": "你的摘要", "tags": ["標籤1", "標籤2"]}}"""
 
     response = generate_text(prompt)
@@ -194,19 +205,51 @@ def process_directory(dirpath):
     if not subdirs and not articles:
         return
         
-    # 根據內容類型建立導讀 Prompt
+    # 根據內容類型建立導讀 Prompt (加入 One-Shot 範例與繁體中文強約束)
     if articles:
         combined_summaries = "\n".join(summaries)
         prompt = f"""以下是建築法規某個章節/小節內所有條文的摘要清單：
 {combined_summaries[:2500]}
 
-請寫一段約 100 字的導讀 (Overview)，概述這個章節的核心規範重點。"""
+請寫一段約 100 字的導讀 (Overview)，概述這個章節的核心規範重點。
+
+【重要指示】
+- 必須使用「繁體中文（台灣繁體）」回答，嚴禁使用簡體字。
+- 語氣必須專業、客觀且嚴謹。
+
+【One-Shot 範例】
+輸入清單：
+- 第178條: 規範公園、綠地等公共設施用地地下建築物之適用範圍。
+- 第179條: 定義地下建築物、地下使用單元等核心用語。
+- 第180條: 規範地下建築物之用途限制與核准程序。
+
+輸出導讀：
+本章節主要規範地下建築物之一般設計通則。內容涵蓋地下建築物與公共設施用地的適用範圍、核心技術用語定義，以及地下使用單元的用途限制與核准程序，旨在為地下空間的規劃設計提供基本的法定遵循標準。
+
+【本次輸入清單】
+請撰寫此章節之導讀："""
     else:
         combined_subdirs = "\n".join([f"- {d}" for d in subdirs])
         prompt = f"""以下是建築法規某個大章節下包含的子小節目錄：
 {combined_subdirs}
 
-請寫一段約 100 字的導讀 (Overview)，概述這個章節的核心規範重點與結構架構。"""
+請寫一段約 100 字的導讀 (Overview)，概述這個章節的核心規範重點與結構架構。
+
+【重要指示】
+- 必須使用「繁體中文（台灣繁體）」回答，嚴禁使用簡體字。
+- 語氣必須專業、客觀且嚴謹。
+
+【One-Shot 範例】
+輸入目錄：
+- 第一節_建築基地
+- 第二節_牆面線_建築物突出部份
+- 第三節_建築物高度
+
+輸出導讀：
+本章節為一般設計通則之系統化規範架構。其下細分為建築基地連接、牆面線退縮與建築物突出物限制、以及建築物高度計算法則等專業章節，旨在針對各別空間機能與構造提供明確的法規導引，以確保建築之整體安全。
+
+【本次輸入目錄】
+請撰寫此章節之導讀："""
 
     overview = generate_text(prompt, max_new_tokens=300)
     
@@ -223,12 +266,12 @@ folder: "{os.path.basename(dirpath)}"
 """
 
     if subdirs:
-        index_content += "\n## 子目錄 (Sub-Folders)\n"
+        index_content += "\n## 子目錄\n"
         for sd in sorted(subdirs):
-            index_content += f"- 📁 **{sd}**\n"
+            index_content += f"- [[{sd}]]\n"
 
     if articles:
-        index_content += "\n## 包含條文 (Articles)\n"
+        index_content += "\n## 包含條文\n"
         # 排序法條
         def get_num_key(art_tuple):
             title = art_tuple[0].replace('.md', '')
@@ -238,7 +281,7 @@ folder: "{os.path.basename(dirpath)}"
         sorted_articles = sorted(articles, key=get_num_key)
         for filename, summary in sorted_articles:
             title = filename.replace('.md', '')
-            index_content += f"- **[{title}]({filename})**: {summary}\n"
+            index_content += f"- [[{title}]]: {summary}\n"
 
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index_content)
