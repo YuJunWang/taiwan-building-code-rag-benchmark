@@ -179,4 +179,13 @@ df = pd.DataFrame(results)
 out_csv = os.path.join(BASE_DIR, "results/benchmark_results_v2.csv")
 df.to_csv(out_csv, index=False, encoding="utf-8-sig")
 print(f"\n[OK] 評估完成！結果已儲存為 {out_csv}")
+
+# 同步儲存至 JSON 檔案供 Subagents 與報表編譯器使用
+all_contexts_path = os.path.join(PROJECT_ROOT, "all_contexts.json")
+eval_questions_path = os.path.join(BASE_DIR, "evaluation_questions.json")
+with open(all_contexts_path, "w", encoding="utf-8") as f:
+    json.dump(results, f, ensure_ascii=False, indent=2)
+with open(eval_questions_path, "w", encoding="utf-8") as f:
+    json.dump(results, f, ensure_ascii=False, indent=2)
+print(f"[OK] JSON 格式上下文已儲存至 {all_contexts_path} 與 {eval_questions_path}")
 print("您現在可以檢視 CSV 檔案，比較兩者撈出的法規上下文 (Context) 準確度。")
