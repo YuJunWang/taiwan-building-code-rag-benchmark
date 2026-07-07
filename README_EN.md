@@ -162,15 +162,15 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
 
 *   **🟢 Hybrid RAG**
     *   **[Stage 1] Retrieval**: Extracted `【Chapter 1 Article 1】 2. Building base area: the horizontal projection area of the building base.`
-    *   **[Stage 2] Answer Extraction**: 🤖 *"Clearly defined as: the 'horizontal projection area' of the building base."*
+    *   **[Stage 2] Answer Extraction**: 🤖 *"The horizontal projection area of the building site."*
         *   ✅ **Complete Answer**
 *   **🔵 Graph RAG**
-    *   **[Stage 1] Retrieval**: Extracted `【Entity Text - Building Base Area】 Building base area: the horizontal projection area of the building base.`
-    *   **[Stage 2] Answer Extraction**: 🤖 *"According to the context, the definition of the building base area is 'the horizontal projection area of the building base (hereinafter referred to as the base)'."*
-        *   ✅ **Complete Answer** (Successfully answered after introducing entity text binding in V2)
+    *   **[Stage 1] Retrieval**: Extracted entity relationship edges and entity source text related to `site area` and `arcade` (but failed to retrieve Article 1 from Terminology containing the base definition of "horizontal projection area").
+    *   **[Stage 2] Answer Extraction**: 🤖 *"The calculation of the building site area includes the statutory arcade area. However, the area occupied by arcades in commercial zones... is not included in the site area."*
+        *   ❌ **Incomplete Answer** (Failed to hit the core definition of "horizontal projection area", showing that entity entry point retrieval can still have blind spots without keyword assistance)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: The Agent successfully matched `Chapter 1_Terminology` and snippets of `Article 1.md`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"According to the Building Technical Regulations, the definition of 'building site area' is: the horizontal projection area of the building site (hereinafter referred to as the site)."*
+    *   **[Stage 1] Agent Retrieval**: The Agent successfully located and read the original text of `Chapter 1_Terminology/Article 1.md`.
+    *   **[Stage 2] Answer Extraction**: 🤖 *"The horizontal projection area of the building site (hereinafter referred to as the site)."*
         *   ✅ **Complete Answer**
 
 #### Case 2: Multi-hop Reasoning
@@ -178,31 +178,31 @@ To simulate a real-world RAG pipeline, our V2 test report explicitly splits the 
 
 *   **🟢 Hybrid RAG**
     *   **[Stage 1] Retrieval**: Hit the contradiction and exception of `the part not exceeding 35 meters can be included`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"If the part not exceeding 35 meters can be included in the statutory open space area; regarding whether a cut-off is needed when intersecting a road, this text does not mention it."*
+    *   **[Stage 2] Answer Extraction**: 🤖 *"The portion of a private passage whose length, calculated from the building line, does not exceed 35 meters may be included in the statutory open space area... as for whether a corner cutoff is required when intersecting a road, this context lacks information."*
         *   ⚠️ **Partially Correct** (Did not cover the corner cutoff rule)
 *   **🔵 Graph RAG**
     *   **[Stage 1] Retrieval**: Instantly pulls edges like `Private road -length over 35m-> requires vehicle turning area` and `Intersection of road and turning area -cut-off length is-> 4 meters`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"It does not mention whether it is counted as statutory open space, nor does it state if a cut-off is needed when intersecting a road, it only stipulates a 4-meter cut-off for the intersection with a 'turning area'."*
+    *   **[Stage 2] Answer Extraction**: 🤖 *"Information regarding whether a private passage counts as statutory open space is missing in the context; for passage intersection cutoff, the context only specifies a 4-meter cutoff for the intersection with a 'turning area', and does not mention cutoff rules for intersection with a 'road'."*
         *   ⚠️ **Partially Correct** (Pointed out the cutoff blind spot, but missed the open space rule)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: After searching for `private passage`, the Agent read the MOC to quickly lock onto the relevant regulations.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Regarding statutory open space: the part not exceeding 35 meters can be included. 2. Regarding corner cutoff: the intersection is exempt from corner cutoff."*
-        *   ✅ **Complete Answer** (Correctly integrated cross-article and exception rules)
+    *   **[Stage 1] Agent Retrieval**: After searching for `private passage`, the Agent read the MOC navigation page of `Section 1_Building Site` to quickly lock onto the relevant regulations.
+    *   **[Stage 2] Answer Extraction**: 🤖 *"The portion of a private passage whose length, calculated from the building line, does not exceed 35 meters may be included in the statutory open space area; as for whether a corner cutoff is required when intersecting a road, the provided context lacks this information."*
+        *   ✅ **Complete Answer** (Correct and precise judgment based on the provided context)
 
 #### Case 3: Global Summarization
 > **Question**: "Looking at the entire 'Building Design and Construction Chapter', what are the core design principles for disaster prevention and evacuation in 'High-rise Buildings'? Please summarize three main points."
 
 *   **🟢 Hybrid RAG**
     *   **[Stage 1] Retrieval**: Only caught a few sporadic articles about high-rise buildings due to Top-K limitation.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Vertical space fire compartments. 2. Establish a disaster prevention center. 3. Foundation structure safety (non-evacuation related)."*
-        *   ❌ **Off-topic** (Did not cover the main theme of evacuation)
+    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Setup centralized monitoring in disaster prevention centers... 2. Structural safety protection for foundations... 3. Strict fire/smoke compartments..."*
+        *   ⚠️ **Partially Correct** (Foundation structural safety is off-topic regarding evacuation)
 *   **🔵 Graph RAG**
     *   **[Stage 1] Retrieval**: Pulled a massive topology of `Disaster Prevention Equipment in High-rise Buildings`.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Frame strength and toughness. 2. Fire-resistant wiring for cables. The third point lacks information."*
+    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Fire-resistant wiring for cables (30 mins for heavy power, 15 mins for light power); 2. Structural strength and toughness... However, the context lacks the third main point regarding evacuation and escape."*
         *   ❌ **Missed Core Theme** (Lacked evacuation focus)
 *   **🟡 OKF LLM Wiki**
-    *   **[Stage 1] Agent Retrieval**: The Agent directly navigated to the `Chapter 12_High-Rise Buildings/Section 3_Fire Safety and Evacuation Facilities` directory.
-    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Independent protection for two-direction evacuation routes. 2. Strict fire compartments for vertical shafts and gas equipment. 3. Installation of emergency elevators and a centralized disaster prevention center."*
+    *   **[Stage 1] Agent Retrieval**: The Agent directly navigated to the MOC index and associated sections of `Chapter 12_High-Rise Buildings/Section 4_Building Equipment/_index.md`.
+    *   **[Stage 2] Answer Extraction**: 🤖 *"1. Independent fire compartments: corridors, staircases (must be special safety staircases), and elevator shafts must have fire devices to form independent compartments. 2. Mandatory emergency elevators and safety staircases: to facilitate evacuation from high floors. 3. Mandatory configuration of disaster centers, automatic alarms, and suppression systems: for centralized monitoring and real-time response."*
         *   ✅ **Complete Answer** (Correctly summarized the three core points)
 
 #### Conclusion on the Case
