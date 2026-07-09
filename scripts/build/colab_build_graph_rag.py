@@ -36,16 +36,33 @@ model_id = "Qwen/Qwen2.5-7B-Instruct"
 print(f"正在載入模型 {model_id} ... (這可能需要幾分鐘下載)")
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-quantization_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_compute_dtype=torch.float16
-)
+# 嘗試載入 bitsandbytes，如果失敗則退回使用 float16 (Kaggle 雙卡環境適用)
+try:
+    import bitsandbytes
+    HAS_BNB = True
+except ImportError:
+    HAS_BNB = False
 
-model = AutoModelForCausalLM.from_pretrained(
-    model_id,
-    device_map="auto",
-    quantization_config=quantization_config
-)
+if HAS_BNB:
+    print("偵測到 bitsandbytes，啟用 4-bit 量化載入...")
+    quantization_config = BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_compute_dtype=torch.bfloat16,
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_quant_type="nf4",
+    )
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        device_map="auto",
+        quantization_config=quantization_config,
+    )
+else:
+    print("警告：未偵測到相容的 bitsandbytes，將改用 float16 載入模型 (Kaggle T4x2 適用)")
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        device_map="auto",
+        torch_dtype=torch.float16,
+    )
 print("模型載入完成！")
 
 # %%
