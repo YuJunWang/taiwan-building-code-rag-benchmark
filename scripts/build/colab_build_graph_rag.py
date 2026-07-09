@@ -82,7 +82,7 @@ JSON 輸出：
     
     generated_ids = model.generate(
         **model_inputs,
-        max_new_tokens=512,
+        max_new_tokens=2048,
         temperature=0.1, # 降低溫度以確保格式穩定
         do_sample=False
     )
