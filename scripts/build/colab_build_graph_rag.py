@@ -135,6 +135,19 @@ for item in tqdm(articles):
         cond = triplet.get("condition", "無")
         
         if sub and pred and obj:
+            # 防禦性轉型：確保擷取到的欄位都是字串 (避免 LLM 回傳陣列導致 unhashable type 'list' 錯誤)
+            if isinstance(sub, list): sub = ", ".join(map(str, sub))
+            else: sub = str(sub)
+            
+            if isinstance(pred, list): pred = ", ".join(map(str, pred))
+            else: pred = str(pred)
+            
+            if isinstance(obj, list): obj = ", ".join(map(str, obj))
+            else: obj = str(obj)
+            
+            if isinstance(cond, list): cond = ", ".join(map(str, cond))
+            else: cond = str(cond)
+            
             # 加入實體節點 (並綁定法規原文)
             if sub not in G:
                 G.add_node(sub, type="Entity", raw_text=content)
