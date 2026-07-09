@@ -84,7 +84,8 @@ JSON 輸出：
         **model_inputs,
         max_new_tokens=2048,
         temperature=0.1, # 降低溫度以確保格式穩定
-        do_sample=False
+        do_sample=True,  # 必須開啟採樣，temperature 才會生效
+        repetition_penalty=1.15 # 加入重複懲罰，避免模型陷入無窮迴圈
     )
     
     generated_ids = [
