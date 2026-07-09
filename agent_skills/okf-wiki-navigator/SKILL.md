@@ -26,7 +26,10 @@ Instead of blinding searching for keywords across all files, you MUST use the fo
 ### 3. Targeted Reading & Breadcrumb Tracking
 - Use `view_file` to read the specific markdown file you identified.
 - Read the content carefully. 
-- **CRITICAL**: If the text contains references to other articles (e.g., "除符合第96條規定外..."), and those articles are necessary to fully answer the question, **DO NOT GUESS**. Use `view_file` to open that referenced file (e.g., `第96條.md`) and read it before answering.
+- **CRITICAL**: If the text contains references to other articles (e.g., "除符合第96條規定外..."), and those articles are necessary to fully answer the question, **DO NOT GUESS**. 
+- Check the YAML `related_articles` array at the top of the markdown file. It contains the exact relative paths to related articles (e.g., `["第三章_建築物之防火/第一節_出入口_走廊_樓梯/第96條"]`).
+- Append `.md` to the relative path and use `view_file` to open that referenced file (e.g., `第三章_建築物之防火/第一節_出入口_走廊_樓梯/第96條.md`).
+- If an article is referenced in the text but NOT listed in `related_articles`, use the `grep_search` tool to search for its filename (e.g. `第96條.md`) inside the `data/databases/okf_knowledge/` directory to find its exact path before calling `view_file`.
 
 ### 4. Fallback (Grep Search)
 - If you have checked the `_index.md` files of the logical chapters but still cannot find the relevant article, or if the user's question uses very specific jargon that spans multiple chapters, you may use the `grep_search` tool.

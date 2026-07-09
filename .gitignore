@@ -47,3 +47,6 @@ archive/
 # Scratch/temp working files (local pipeline intermediates)
 scratch/
 all_contexts.json
+
+# Environment variables
+.env

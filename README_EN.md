@@ -151,6 +151,7 @@ We designed 15 questions covering "Fact Retrieval", "Multi-hop Reasoning", and "
 | **Multi-hop Reasoning** | 🟡 Fair (Misses without word overlap) | 🟢 Excellent (Connects via Edges) | 🟢 Excellent (Jumps via internal links) |
 | **Global Summarization**| 🔴 Poor (Top-K limits view) | 🟢 Excellent (Topology shows relations) | 🟢 Excellent (Summarizes via MOC) |
 | **Latency** | 🟢 < 0.5 sec | 🟡 0.5 ~ 1.5 sec (Depends on size) | 🔴 ~30-40 sec (Agent multi-step reasoning & tool calls) |
+| **LangSmith Eval (Strict Metric)** | 🟡 0.57 (57%) | 🔴 0.07 (7%) | 🟢 0.90 (90%) |
 
 ### 🔍 Case Study: V2 Two-Stage RAG Execution
 
