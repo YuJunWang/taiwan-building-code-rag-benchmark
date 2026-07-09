@@ -51,9 +51,15 @@ print("模型載入完成！")
 # %%
 # 4. 定義萃取函數
 def extract_triplets(text):
-    prompt = f"""請閱讀以下建築法規條文，並從中萃取出實體(Entities)之間的關聯(Relationships)。
-輸出的格式必須是嚴格的 JSON 陣列，每個元素包含 "subject", "predicate", "object" 三個欄位。
+    prompt = f"""請閱讀以下建築法規條文，並從中萃取出實體(Entities)之間的關聯(Relationships)與法規條件(Conditions)。
+輸出的格式必須是嚴格的 JSON 陣列，每個元素包含 "subject", "predicate", "object", "condition" 四個欄位。
 如果沒有明顯關聯，請輸出空陣列 []。不要輸出任何其他解釋或文字。
+
+欄位定義：
+- subject (主詞): 規範主體，如「防火牆」、「避難層」。
+- predicate (關聯/動作): 規範動作，如「退縮距離」、「防火時效」、「不得超過」。
+- object (受詞/數值): 規範客體或數值限制，如「6公尺」、「1小時」、「12.5%」。
+- condition (條件): 該規定適用的前提條件，如「若外牆為木造」、「無窗戶居室」。若無特定條件請填寫 "無"。
 
 法規條文：
 {text}
@@ -62,7 +68,7 @@ JSON 輸出：
 """
     
     messages = [
-        {"role": "system", "content": "你是一個精準的知識萃取系統，專門將法律文本轉換為知識圖譜三元組。請只輸出 JSON 格式。"},
+        {"role": "system", "content": "你是一個精準的知識萃取系統，專門將法律文本轉換為法規條件知識圖譜。請只輸出 JSON 格式。"},
         {"role": "user", "content": prompt}
     ]
     
@@ -125,6 +131,7 @@ for item in tqdm(articles):
         sub = triplet.get("subject")
         pred = triplet.get("predicate")
         obj = triplet.get("object")
+        cond = triplet.get("condition", "無")
         
         if sub and pred and obj:
             # 加入實體節點 (並綁定法規原文)
@@ -142,8 +149,8 @@ for item in tqdm(articles):
                 if content not in existing_text:
                     G.nodes[obj]["raw_text"] = existing_text + "\n---\n" + content
                     
-            # 加入關係邊 (同時記錄來源條文)
-            G.add_edge(sub, obj, relation=pred, source_article=article_no)
+            # 加入關係邊 (同時記錄來源條文與條件)
+            G.add_edge(sub, obj, relation=pred, condition=cond, source_article=article_no)
             
             # 將法規節點與該條文的主體連結起來
             G.add_edge(article_no, sub, relation="規範了")

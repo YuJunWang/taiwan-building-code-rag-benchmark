@@ -4,6 +4,12 @@ import json
 import pickle
 import pandas as pd
 import networkx as nx
+import glob
+import re
+from dotenv import load_dotenv
+load_dotenv()
+
+from langsmith import traceable
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 
@@ -45,6 +51,7 @@ hybrid_db = Chroma(persist_directory=os.path.join(PROJECT_ROOT, "data/databases/
 with open(os.path.join(PROJECT_ROOT, "data/databases/rag_hybrid_export/bm25_retriever.pkl"), "rb") as f:
     bm25_retriever = pickle.load(f)
 
+@traceable(name="Hybrid_Retrieval")
 def retrieve_hybrid_rag(query):
     start_time = time.time()
     # 這裡我們簡化實作，直接抓取 Vector Top-3 做為檢索結果
@@ -69,6 +76,7 @@ print("載入 Graph RAG 圖譜與實體向量庫...")
 G = nx.read_graphml(os.path.join(PROJECT_ROOT, "data/databases/graph_rag_hybrid_export/graph_rag_export.graphml"))
 entity_db = Chroma(persist_directory=os.path.join(PROJECT_ROOT, "data/databases/graph_rag_hybrid_export/graph_entity_chroma_db"), embedding_function=embeddings)
 
+@traceable(name="Graph_Retrieval")
 def retrieve_graph_rag(query):
     start_time = time.time()
     
@@ -90,7 +98,12 @@ def retrieve_graph_rag(query):
                 edge_data = G.get_edge_data(node, neighbor)
                 relation = edge_data.get('relation', '相關於')
                 source = edge_data.get('source_article', '未知來源')
-                retrieved_knowledge.append(f"[{source}] {node} -{relation}-> {neighbor}")
+                condition = edge_data.get('condition', '無')
+                
+                if condition and condition != "無" and condition != "":
+                    retrieved_knowledge.append(f"[{source}] (條件: {condition}) {node} -{relation}-> {neighbor}")
+                else:
+                    retrieved_knowledge.append(f"[{source}] {node} -{relation}-> {neighbor}")
                 
     context = "\n".join(set(retrieved_knowledge[:15])) # 取前15條最相關的拓樸
     latency = time.time() - start_time
@@ -104,6 +117,7 @@ def retrieve_graph_rag(query):
 # 真實的 Agentic 檢索結果（導航 SKILL + view_file + list_dir）
 # 請參照： benchmark/results/okf_agent_answers.json
 # ==========================================
+@traceable(name="OKF_Wiki_Retrieval")
 def retrieve_okf_wiki(query):
     start_time = time.time()
     
