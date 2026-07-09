@@ -50,3 +50,8 @@ all_contexts.json
 
 # Environment variables
 .env
+
+# Antigravity Task Folders
+scratch/
+archive/
+.env
