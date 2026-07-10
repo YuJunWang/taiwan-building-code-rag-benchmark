@@ -3,225 +3,225 @@
     "question": "請問建築技術規則中，對於「建築基地面積」的定義是什麼？",
     "hybrid": {
       "score": 1.0,
-      "reasoning": "學生答案正確地包含了建築技術規則中對於「建築基地面積」的定義，即建築基地之水平投影面積。"
+      "reasoning": "答案完美符合標準解答，精準點出「水平投影面積」。"
     },
     "graph": {
       "score": 1.0,
-      "reasoning": "學生答案完全符合給分標準，正確定義了建築基地面積的概念"
+      "reasoning": "答案完美符合標準解答，精準點出「水平投影面積」。"
     },
     "okf": {
       "score": 1.0,
-      "reasoning": "學生答案完全符合給分標準，建築基地面積的定義確實是指建築基地之水平投影面積。"
+      "reasoning": "答案完美符合標準解答，精準點出「水平投影面積」。"
     }
   },
   {
     "question": "根據規定，無窗戶居室的定義中，有效採光面積未達該居室樓地板面積的百分之多少？",
     "hybrid": {
       "score": 1.0,
-      "reasoning": "學生答案正確地提到有效採光面積未達該居室樓地板面積的百分之五，完全符合規定的定義。"
+      "reasoning": "正確命中「百分之五」之要求。"
     },
     "graph": {
       "score": 1.0,
-      "reasoning": "學生答案正確地提到有效採光面積未達該居室樓地板面積的百分比為5%，完全符合規定的定義。"
+      "reasoning": "正確命中「百分之五」之要求。"
     },
     "okf": {
       "score": 1.0,
-      "reasoning": "學生答案正確地提到有效採光面積未達該居室樓地板面積的百分比為5%"
+      "reasoning": "正確命中「百分之五」之要求。"
     }
   },
   {
     "question": "非防火構造建築物，其外牆為木造者，與相鄰基地境界線之距離應為多少公尺以上？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "學生答案未能滿足給分標準，未提及非防火構造建築物外牆為木造者與相鄰基地境界線之距離應為多少公尺以上"
+      "reasoning": "完全答非所問（回答防空避難設備）。"
     },
     "graph": {
       "score": 0.0,
-      "reasoning": "學生答案中提到的距離為一．五公尺，但根據給分標準，非防火構造外牆為可燃材料（如木造）者，自基地境界線退縮留設之防火間隔應超過6公尺。因此，學生答案不符合給分標準的要求。"
+      "reasoning": "回答1.5公尺，未命中木造等可燃材料需「超過6公尺」之標準。"
     },
     "okf": {
       "score": 0.0,
-      "reasoning": "學生答案未能滿足給分標準，給分標準規定非防火構造外牆為可燃材料者，自基地境界線退縮留設之防火間隔應超過6公尺，但學生答案只提到退縮留設淨寬一．五公尺以上之防火間隔，未達到規定的6公尺，故評分為0.0"
+      "reasoning": "回答1.5公尺，未命中木造等可燃材料需「超過6公尺」之標準。"
     }
   },
   {
     "question": "防火構造建築物內之特別安全梯，其樓梯間之牆壁應具有幾小時以上的防火時效？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "學生答案未能滿足題目要求，未提及特別安全梯樓梯間之牆壁的防火時效，故評分為0.0"
+      "reasoning": "完全答非所問（回答防災中心）。"
     },
     "graph": {
       "score": 1.0,
-      "reasoning": "學生答案正確地指出特別安全梯的樓梯間之牆壁應具有1小時以上的防火時效，完全符合給分標準的要求。"
+      "reasoning": "正確命中「一小時以上防火時效」。"
     },
     "okf": {
       "score": 1.0,
-      "reasoning": "學生答案正確地提到樓梯間之牆壁應具有1小時以上的防火時效，符合給分標準的要求。"
+      "reasoning": "正確命中「一小時以上防火時效」。"
     }
   },
   {
     "question": "停車空間單車道寬度至少應為多少公尺？雙車道寬度至少應為多少公尺？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "學生答案完全未符合題目要求，沒有提到停車空間單車道或雙車道的寬度，反而提到了陽臺和露臺的定義和建築面積的計算方法，與題目無關。"
+      "reasoning": "完全答非所問（回答陽臺規定）。"
     },
     "graph": {
       "score": 1.0,
-      "reasoning": "學生答案正確地包含了停車空間單車道寬度至少應為3.5公尺，雙車道寬度至少應為5.5公尺的資訊，完全符合給分標準的要求。"
+      "reasoning": "正確回答單車道3.5公尺、雙車道5.5公尺。"
     },
     "okf": {
       "score": 1.0,
-      "reasoning": "學生答案正確地包含了停車空間單車道寬度至少應為3.5公尺，雙車道寬度至少應為5.5公尺的要求。"
+      "reasoning": "正確回答單車道3.5公尺、雙車道5.5公尺。"
     }
   },
   {
     "question": "某建商想在基地內設置一條「私設通路」，該私設通路是否計入法定空地？如果該通路與道路交叉，是否需要截角？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99609, Requested 701. Please try again in 4m27.839999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "reasoning": "完全答非所問（回答屋頂突出物）。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99608, Requested 674. Please try again in 4m3.648s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "正確說明未超過35公尺得計入，且交叉口免截角。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99606, Requested 654. Please try again in 3m44.64s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "正確說明未超過35公尺得計入，且交叉口免截角。"
     }
   },
   {
     "question": "一棟 15 層樓的集合住宅，其內部設置的昇降機，是否必須包含「緊急用昇降機」？如果是，該機間的構造有何特殊防火與排煙要求？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99605, Requested 707. Please try again in 4m29.567999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "reasoning": "答非所問（回答木造防火區劃）。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99604, Requested 688. Please try again in 4m12.287999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "指出須設置緊急用昇降機及1小時防火時效與排煙，但漏掉天花板裝修材料及防火門數量限制細節。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99602, Requested 736. Please try again in 4m52.032s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "完美涵蓋須設置、1小時防火時效、耐燃一級材料與排煙設備等要求。"
     }
   },
   {
     "question": "建築物的「避難層」通常是指具有出入口通達地面或道路之樓層，但如果該建築物設有地下室（例如作為商場），該地下室直通樓梯的總寬度是否有特殊規定？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99601, Requested 743. Please try again in 4m57.216s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "reasoning": "回答了供公眾使用建築物的出入口規定，並未針對地下室直通樓梯的總寬度作答。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99600, Requested 700. Please try again in 4m19.2s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到需依樓地板面積計算及1.2公尺限制，但未提及「以避難層為分界獨立核算」及「36公分」等核心數據。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99598, Requested 713. Please try again in 4m28.704s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到按營業部分面積寬60公分計算，但未命中「以避難層為分界獨立核算」及加嚴至「36公分」等核心數據。"
     }
   },
   {
     "question": "某一般辦公大樓（非高層建築物）屋頂設有水塔、樓梯間與突出屋面的管道間。這些突出物的投影面積總和最多不能超過建築面積的百分之幾？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99597, Requested 629. Please try again in 3m15.263999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "reasoning": "答非所問（回答安全梯設置）。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99596, Requested 637. Please try again in 3m21.312s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "精準回答不超過建築面積12.5%。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99594, Requested 646. Please try again in 3m27.36s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "精準回答不超過建築面積12.5%。"
     }
   },
   {
     "question": "有關防火區劃的規定，當連棟式建築物進行設計時，其「分戶牆」與「防火牆」在構造材質與防火時效上的要求有何核心差異？",
     "hybrid": {
       "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99593, Requested 697. Please try again in 4m10.559999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "reasoning": "答非所問（回答有效日照）。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99592, Requested 701. Please try again in 4m13.152s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "指出防火牆無開口之核心精神，但未提及其應突出建築物外牆面 50 公分等細節。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99590, Requested 701. Please try again in 4m11.423999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "點出防火牆突出外牆及無開口的時效要求，但遺漏了分戶牆得設開口的具體對比差異。"
     }
   },
   {
     "question": "綜觀整部《建築設計施工編》，關於「高層建築物」在防災與逃生避難上的核心設計原則是什麼？請歸納出三個主要重點。",
     "hybrid": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99589, Requested 853. Please try again in 6m21.888s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "列出三個重點，包含防火區劃與防災中心，但未提及「二方向避難原則」。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99588, Requested 695. Please try again in 4m4.512s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "命中特別安全梯與防火區劃，但未提及防災中心及二方向避難。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99586, Requested 746. Please try again in 4m46.848s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "命中二方向避難及特別安全梯、排煙設備，但未提到防災中心。"
     }
   },
   {
     "question": "法規中對於「防空避難設備」的整體規範邏輯為何？主要是依據哪些參數（如面積、樓層、用途）來決定應附建的防空避難設備標準？",
     "hybrid": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99585, Requested 771. Please try again in 5m7.584s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 1.0,
+      "reasoning": "完美涵蓋用途、樓層數、建築面積及容納人數四個判斷參數。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99583, Requested 677. Please try again in 3m44.64s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到用途及面積，但漏掉了「樓層數」及學校/工廠的「容納人數」參數。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99582, Requested 719. Please try again in 4m20.064s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到用途類別、樓層數及建築面積，但漏掉了學校/工廠的「容納人數」參數。"
     }
   },
   {
     "question": "請總結法規中關於「綠建築」或「節能設施」（如屋頂綠化、雨水貯留、遮陽設施等）在計算建築面積或建築物高度時的「放寬」或「免計入」規定。",
     "hybrid": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99581, Requested 869. Please try again in 6m28.799999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "命中遮陽設施及綠建築免計入之概念，但未命中突出物可放寬至30%等具體數據。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99579, Requested 755. Please try again in 4m48.576s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "命中放寬至30%之規定，但未提及遮陽設施2.0公尺等細節條件。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99578, Requested 699. Please try again in 3m59.328s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "命中放寬至30%之規定，但未提及遮陽設施透空及深度的特定條件。"
     }
   },
   {
     "question": "針對行動不便者，法規在「無障礙環境」的硬體設計上（如坡道、廁所、停車位），其主要規範架構與要求為何？",
     "hybrid": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99577, Requested 815. Please try again in 5m38.688s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "僅敘述了需設置無障礙通路之大架構，但未命中坡度1:8、停車位數量等具體核心數據。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99575, Requested 757. Please try again in 4m46.848s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到需設置無障礙通路與車位，但給出的坡度為1:12，且未命中停車位數量規定。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99574, Requested 712. Please try again in 4m7.104s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "點出設置項目，但完全沒有給出如坡度1:8、停車位50輛等具體數據要求。"
     }
   },
   {
     "question": "關於「防火間隔」的設計，法規的主要考量點是什麼？請說明不同構造材質（如防火構造與非防火構造）與建築物高度，如何影響防火間隔的留設標準。",
     "hybrid": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99573, Requested 877. Please try again in 6m28.799999999s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "說明了防火與非防火的差異及1.5公尺退縮，但未說明高度超過50公尺的落物曲線退縮規定及6公尺以上免不燃材料限制。"
     },
     "graph": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99571, Requested 749. Please try again in 4m36.48s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到了防火與非防火差異，但未給出具體退縮距離或高樓層落物曲線規定。"
     },
     "okf": {
-      "score": 0.0,
-      "reasoning": "Error code: 429 - {'error': {'message': 'Rate limit reached for model `llama-3.3-70b-versatile` in organization `org_01kc4a7bt9fhe9y1sadnzafn93` service tier `on_demand` on tokens per day (TPD): Limit 100000, Used 99570, Requested 799. Please try again in 5m18.816s. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing', 'type': 'tokens', 'code': 'rate_limit_exceeded'}}"
+      "score": 0.5,
+      "reasoning": "提到了1.5公尺與3公尺退縮，但未提到高度超過50公尺的落物曲線退縮規定。"
     }
   }
 ]
