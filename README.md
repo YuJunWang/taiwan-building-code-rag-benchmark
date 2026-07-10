@@ -54,7 +54,7 @@ cd taiwan-building-code-rag-benchmark
 # 2. 安裝套件
 pip install -r requirements.txt
 
-# 3. 直接執行 V2 評估腳本
+# 3. 直接執行 V3 評估腳本
 python benchmark/local_evaluator.py
 ```
 > 執行後，結果將輸出至 `benchmark/results/benchmark_results_v3.csv`。
@@ -101,9 +101,9 @@ uv pip install -r requirements.txt
 - **建置原理**：以純文字 Markdown 資料夾樹為基礎。透過 Regex 建立實體內部連結，並由 LLM 為每一條法規補上 `Summary` 與 `Tags`，最終在每個資料夾生成 `_index.md` (Map of Content)。
 - **檢索機制**：依賴具有 `list_dir`, `view_file` 等工具的 Agent 進行主動導航與探索。為了解決 Agent 迷失的問題，我們特別開發了 `okf-wiki-navigator` SKILL，賦予 Agent「優先閱讀 MOC (目錄)」與「循線追蹤麵包屑」的能力，使其具備真正的人類翻書邏輯，完全無須建立龐大的 Vector DB。
 
-## 🚀 V2 架構升級重點與成果 (V2 Enhancements)
+## 🚀 V3 架構升級重點與成果 (V3 Enhancements)
 
-根據初期的實測與 V2 架構評估，我們已在最新版本中實作了以下升級：
+根據初期的實測與 V3 架構評估，我們已在最新版本中實作了以下升級：
 1. **Hybrid RAG**：導入「父子文件檢索 (Parent-Child Retriever)」，將切片還原為完整的法規母條文，避免脈絡被截斷。
 2. **Graph RAG**：導入「圖譜與原文綁定 (Graph-Document Binding)」，將實體節點直接綁定原始條文，有效解決以往 Graph RAG 單純回傳實體名詞而導致的定義模糊問題。
 3. **OKF LLM Wiki (大規模標準化與圖譜化)**：
@@ -153,9 +153,9 @@ uv pip install -r requirements.txt
 | **平均查詢延遲 (Retrieval + Generation)** | 🔴 ~22.1 秒 (檢索: 8.35s / 生成: 13.78s) | 🟢 ~10.3 秒 (檢索: 7.83s / 生成: 2.50s) | 🟡 ~13.1 秒 (檢索: 7.22s / 生成: 5.89s) |
 | **LangSmith 評估 (LLM Judge: gpt-oss-120b)** | 🔴 0.17 (17%) | 🟡 0.57 (57%) | 🟢 0.60 (60%) |
 
-### 🔍 實際案例解析：V2 雙階段 RAG 實測 (Case Study)
+### 🔍 實際案例解析：V3 雙階段 RAG 實測 (Case Study)
 
-為了符合真實世界的 RAG 運作邏輯，V2 測試報告針對 Hybrid RAG 與 Graph RAG 採用**「[第一階段] 檢索查閱」**與**「[第二階段] AI 答案提取」**的兩階段切割；OKF LLM Wiki 則因為 Agent 的自主推理特性，採用**「[單一階段] Agent 自主檢索與推理」**的評估方式。以下截取自真實測試紀錄的三個不同層次問題：
+為了符合真實世界的 RAG 運作邏輯，V3 測試報告針對 Hybrid RAG 與 Graph RAG 採用**「[第一階段] 檢索查閱」**與**「[第二階段] AI 答案提取」**的兩階段切割；OKF LLM Wiki 則因為 Agent 的自主推理特性，採用**「[單一階段] Agent 自主檢索與推理」**的評估方式。以下截取自真實測試紀錄的三個不同層次問題：
 
 #### 案例一：事實定義檢索 (Fact-retrieval)
 > **問題**：「請問建築技術規則中，對於『建築基地面積』的定義是什麼？」
@@ -215,7 +215,7 @@ uv pip install -r requirements.txt
 
 ## 🔮 未來展望：OKF 架構的進化藍圖 (Future Vision)
 
-本次 V2 Benchmark 驗證了 OKF (Open Knowledge Format) 在大改版後所帶來的「全局理解」與「跨條文推論」上的優勢。透過 MOC 與標準 Markdown 相對路徑連結（`[name](./path.md)`），Agent 在做跨章節導航時的效率獲得顯著提升，且相容於 GitHub、任意 Markdown viewer 及所有 LLM 環境，不再依賴 Obsidian 專屬格式。
+本次 V3 Benchmark 驗證了 OKF (Open Knowledge Format) 在大改版後所帶來的「全局理解」與「跨條文推論」上的優勢。透過 MOC 與標準 Markdown 相對路徑連結（`[name](./path.md)`），Agent 在做跨章節導航時的效率獲得顯著提升，且相容於 GitHub、任意 Markdown viewer 及所有 LLM 環境，不再依賴 Obsidian 專屬格式。
 
 為了將 OKF 的效益進一步極大化，未來的進化方向將專注於以下兩大核心維度：
 
