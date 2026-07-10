@@ -111,7 +111,7 @@ uv pip install -r requirements.txt
    - **Frontmatter 屬性標籤化與主題圖譜 🏷️**：利用 AI 全量為 700+ 個法規檔案寫入 `summary` 與 `tags` 元數據，並在 `主題索引/` 目錄中建立 56 個跨章節主題導覽，實現不依賴向量庫的主題拓樸檢索。
    - **本地端自動化與繁體字校正**：導入 Colab 建置指令的一鍵執行，結合 OpenCC s2twp 繁體化與 One-Shot 範例引導，徹底解決模型容易輸出簡體字與格式不一致的痛點。
 
-> 👉 **[點此查看：15 題全量 V2 Benchmark 終極測試報告](docs/benchmark_v2_report.md)**
+> 👉 **[點此查看：15 題全量 V3 Benchmark 終極測試報告](docs/benchmark_v3_report.md)**
 
 ---
 
