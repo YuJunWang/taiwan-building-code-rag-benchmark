@@ -13,7 +13,7 @@ DATA_DIR = os.path.join(BASE_DIR, "benchmark")
 
 # 初始化 LangSmith 客戶端與評測用 LLM
 client = Client()
-eval_llm = ChatGroq(model="llama-3.1-8b-instant")
+eval_llm = ChatGroq(model="openai/gpt-oss-120b")
 
 # ==========================================
 # 1. 建立 / 取得 LangSmith Dataset
@@ -89,11 +89,11 @@ def custom_qa_evaluator(run, example):
 # 3. 準備靜態測試結果 (Target Functions)
 # ==========================================
 # 讀取三個系統的生成結果
-with open(os.path.join(DATA_DIR, "results", "hybrid_answers.json"), "r", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "results", "hybrid_answers_timed.json"), "r", encoding="utf-8") as f:
     hybrid_ans = json.load(f)
-with open(os.path.join(DATA_DIR, "results", "graph_answers.json"), "r", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "results", "graph_answers_timed.json"), "r", encoding="utf-8") as f:
     graph_ans = json.load(f)
-with open(os.path.join(DATA_DIR, "results", "okf_agent_answers.json"), "r", encoding="utf-8") as f:
+with open(os.path.join(DATA_DIR, "results", "okf_agent_answers_timed.json"), "r", encoding="utf-8") as f:
     okf_ans = json.load(f)
     
 # 為了讓 evaluate 函式能靜態讀取，我們使用閉包函數搭配一個 index 計數器
@@ -106,7 +106,7 @@ def create_static_target(answers_list):
             qs = json.load(f)
         idx = next((i for i, row in enumerate(qs) if row["Question"] == inputs["question"]), 0)
         
-        answer = answers_list[idx] if idx < len(answers_list) else "生成失敗"
+        answer = answers_list["results"][idx]["answer"] if "results" in answers_list and idx < len(answers_list["results"]) else "生成失敗"
         return {"answer": answer}
     return target_func
 
