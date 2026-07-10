@@ -2,38 +2,38 @@
 
 # LLM Knowledge Retrieval Benchmark: RAG vs. Graph RAG vs. OKF-Wiki
 
-This is an advanced AI knowledge retrieval architecture comparison project built upon the Taiwan "Building Technical Regulations: Building Design and Construction Edition".
-The core objective of this project is not to favor a single architecture, but to objectively implement and compare the three mainstream knowledge base architectures on the market today. It highlights the real pros and cons from "underlying setup" to "actual query execution", providing developers and enterprises with the most pragmatic technical selection reference.
+This is an AI knowledge retrieval architecture comparison project built upon the Taiwan "Building Technical Regulations: Building Design and Construction Edition".
+The core objective of this project is to objectively implement and compare the three mainstream knowledge base architectures on the market today. It highlights the real pros and cons from "underlying setup" to "actual query execution", providing developers and enterprises with a reference for technical selection.
 
 ---
 
 ## 📊 Comprehensive System Evaluation & Pros/Cons (System Comparison)
 
-Based on the latest **V3 Benchmark** (15 complex building code questions, evaluated double-blind by Gemini 3.1 Pro), the performance and characteristics of the three systems are summarized below:
+Based on the latest **V3 Benchmark** (15 complex building code questions, evaluated by Gemini 3.1 Pro), the performance and characteristics of the three systems are summarized below:
 
-| System Architecture | Setup Cost (Setup) | Query Speed (Speed) | Gemini 3.1 Pro Score | Core Advantages (Pros) | Fatal Disadvantages (Cons) |
+| System Architecture | Setup Cost (Setup) | Query Speed (Speed) | Gemini 3.1 Pro Score | Core Advantages (Pros) | Major Limitations (Limitations) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Hybrid RAG**<br>(Vector + BM25) | 🟢 **Lowest**<br>Only requires Embedding model to calculate vectors | 🟡 **Medium**<br>~13 seconds | 🔴 **33%** | Fastest to build, low technical barrier, perfect for single-fact or explicit keyword retrieval. | Prone to chunk truncation losing context; overloading the LLM brain with too much text leads to processing failures; extremely weak in cross-chapter reasoning. |
-| **Graph RAG**<br>(Knowledge Graph Traversal) | 🔴 **Highest**<br>Requires powerful LLM full-text scanning to extract entities | 🟢 **Extremely Fast**<br>~2.5 seconds | 🟡 **67%** | Extremely fast response (least noise); highly sensitive to entity relationships, explicit numerical regulations, and conditional constraints. | Extremely time-consuming and expensive to build; if the upstream LLM fails to extract the entity during setup, the query will completely fail to find data. |
-| **OKF-Wiki**<br>(Agent Local Directory Navigation) | 🟡 **Medium**<br>Requires LLM to generate summaries and MOCs | 🟡 **Medium**<br>~13 seconds | 🟢 **70%** | Highest accuracy, most complete logical deduction; possesses human-like fault tolerance when searching books, capable of tracking cross-chapter regulations step-by-step. | Query speed is limited by the Agent calling tools multiple times; for extremely simple single questions, there is an "overkill" performance waste. |
+| **Hybrid RAG**<br>(Vector + BM25) | 🟢 **Lowest**<br>Only requires Embedding model to calculate vectors | 🟡 **Medium**<br>~13 seconds | 🔴 **33%** | Fastest to build, low technical barrier, perfect for single-fact or explicit keyword retrieval. | Prone to paragraph truncation losing context; if too much irrelevant text is included at once, it easily distracts the model's attention; struggles with complex cross-chapter reasoning. |
+| **Graph RAG**<br>(Knowledge Graph Traversal) | 🔴 **Highest**<br>Requires powerful LLM full-text scanning to extract entities | 🟢 **Extremely Fast**<br>~2.5 seconds | 🟡 **67%** | Extremely fast response (least noise); accurately captures entity relationships, explicit numerical regulations, and conditional constraints. | Extremely time-consuming and expensive to build; if the upstream operation fails to successfully extract the entity, it will lead to missing information during subsequent retrieval. |
+| **OKF-Wiki**<br>(Agent Local Directory Navigation) | 🟡 **Medium**<br>Requires LLM to generate summaries and MOCs | 🟡 **Medium**<br>~13 seconds | 🟢 **70%** | Highest accuracy, most complete logical deduction; possesses human-like fault tolerance when searching books, capable of tracking cross-chapter regulations step-by-step. | Query speed is limited by the Agent calling tools multiple times; for extremely simple single questions, it causes a relative waste of computational resources and time. |
 
-> 👉 **For detailed question-by-question test records and judge reviews, please refer to: [15-Question Full V3 Benchmark Ultimate Evaluation Report](docs/benchmark_v3_report.md)**
+> 👉 **For detailed question-by-question test records and judge reviews, please refer to: [15-Question Full V3 Benchmark Complete Evaluation Report](docs/benchmark_v3_report.md)**
 
 ---
 
 ## 🔍 Architecture Implementation Principles (Methodology)
 
-This project intentionally selects "lightweight, open-source, and local-friendly" frameworks to ensure anyone can run the Benchmark with zero barriers.
+This project intentionally selects "lightweight, open-source, and local-friendly" frameworks to ensure anyone can easily get started and run the Benchmark.
 
 1. **Traditional RAG (Hybrid Search + Structural Chunking)**
    * **Implementation**: Uses Chroma (Vector) + Rank-BM25 (Keyword) for hybrid retrieval, with RRF for re-ranking.
-   * **Features**: Abandons fixed word-count chunking in favor of native regulation "Article/Paragraph/Subparagraph" chunking, and introduces "Parent-Child" retrieval to restore the complete context.
+   * **Features**: Abandons rigid fixed-word-count chunking in favor of semantic chunking based on native regulation "Article/Paragraph/Subparagraph", and automatically brings in the context of the entire article segment during retrieval to restore the original context.
 2. **Graph RAG (Two-tiered Indexing)**
    * **Implementation**: Uses Qwen2.5-7B to extract Entity-Relationship triplets from regulations to build the graph.
-   * **Features**: Uses Vector DB to find entry nodes, then uses NetworkX for 1-Hop topological traversal in memory, and binds the original entity text to ensure definitions are not distorted.
+   * **Features**: First uses the vector database to find a starting point, then expands outward from that point to create a relationship network (1-Hop), binding each node to the original regulation to prevent bias during model deduction.
 3. **OKF LLM Wiki (Hierarchical MOC + Agent Tools)**
-   * **Implementation**: Pure text Markdown directory tree. Uses LLM to generate standardized _index.md (Map of Content) and relative path bidirectional links.
-   * **Features**: Completely independent of vector databases, granting the Agent `list_dir` and `view_file` capabilities, forcing the Agent to read the directory first before drilling down into the regulations.
+   * **Implementation**: Pure text Markdown directory tree. Uses LLM to generate standardized `_index.md` (Map of Content) and relative path bidirectional links.
+   * **Features**: Completely independent of vector databases, converting regulations into a Markdown directory tree with bidirectional links. By providing tools to read files, it allows the AI to first read the table of contents before reading the text, much like a human consulting an encyclopedia.
 
 ---
 
