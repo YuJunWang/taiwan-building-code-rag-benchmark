@@ -1,4 +1,4 @@
-﻿**繁體中文** | [English](README_EN.md)
+**繁體中文** | [English](README_EN.md)
 
 # LLM Knowledge Retrieval Benchmark: RAG vs. Graph RAG vs. OKF-Wiki
 
@@ -41,7 +41,7 @@
 
 法規資料庫體積小（MB 等級），本專案已將三大架構的完整資料庫內建於 Repo data/databases/ 中，您可以直接 clone 並執行測試，無需重新建置：
 
-\\\ash
+```bash
 # 1. 取得專案並安裝套件
 git clone https://github.com/YuJunWang/taiwan-building-code-rag-benchmark.git
 cd taiwan-building-code-rag-benchmark
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 
 # 2. 直接執行評估腳本
 python benchmark/local_evaluator.py
-\\\
+```
 
 > 若需重新建置資料庫，建置腳本存放於 scripts/build/ 目錄下，可透過 Colab 執行。
 
