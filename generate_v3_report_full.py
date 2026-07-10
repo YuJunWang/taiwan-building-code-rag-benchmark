@@ -7,7 +7,13 @@ def load_json(file_path):
         return data['results']
     return data
 
-questions = load_json('benchmark/evaluation_questions.json')
+# Load 15 questions from txt
+with open('benchmark/questions.txt', 'r', encoding='utf-8') as f:
+    question_lines = [line.strip() for line in f if line.strip()]
+
+# Load reference answers from semantic_answers.json
+ref_answers = load_json('benchmark/results/semantic_answers.json')
+
 h_ans = load_json('benchmark/results/hybrid_answers_timed.json')
 g_ans = load_json('benchmark/results/graph_answers_timed.json')
 o_ans = load_json('benchmark/results/okf_agent_answers_timed.json')
@@ -35,35 +41,34 @@ with open('docs/benchmark_v3_report.md', 'w', encoding='utf-8') as f:
     f.write("---\n\n## 逐題測試結果對照表\n\n")
     
     for i in range(15):
-        q_obj = questions[i] if i < len(questions) else {}
-        question_text = q_obj.get('question', h_ans[i].get('question', f"Question {i+1}"))
-        ref_ans = q_obj.get('answer', '無提供標準解答')
+        question_text = question_lines[i] if i < len(question_lines) else f"Question {i+1}"
+        ref_ans = ref_answers[i] if i < len(ref_answers) else "無提供標準解答"
         
         f.write(f"### 💡 問題 {i+1}: {question_text}\n\n")
-        f.write(f"- 🎯 **參考標準解答 (Reference Answer)**：\n  > {ref_ans}\n\n")
+        f.write(f"- 🎯 **人工標準解答 (Semantic Answer)**：\n  > {ref_ans}\n\n")
         
         # Hybrid
-        hr = h_ans[i].get('retrieval_time_seconds', 0)
-        hg = h_ans[i].get('generation_time_seconds', 0)
-        ha = h_ans[i].get('answer', 'N/A')
+        hr = h_ans[i].get('retrieval_time_seconds', 0) if i < len(h_ans) else 0
+        hg = h_ans[i].get('generation_time_seconds', 0) if i < len(h_ans) else 0
+        ha = h_ans[i].get('answer', 'N/A') if i < len(h_ans) else 'N/A'
         f.write(f"#### 🟢 Hybrid RAG\n")
         f.write(f"- **[檢索查閱]** 耗時: {float(hr):.2f} 秒\n")
         f.write(f"- **[答案提取]** 耗時: {float(hg):.2f} 秒\n")
         f.write(f"  🤖 **最終答案**：\n  {ha}\n\n")
         
         # Graph
-        gr = g_ans[i].get('retrieval_time_seconds', 0)
-        gg = g_ans[i].get('generation_time_seconds', 0)
-        ga = g_ans[i].get('answer', 'N/A')
+        gr = g_ans[i].get('retrieval_time_seconds', 0) if i < len(g_ans) else 0
+        gg = g_ans[i].get('generation_time_seconds', 0) if i < len(g_ans) else 0
+        ga = g_ans[i].get('answer', 'N/A') if i < len(g_ans) else 'N/A'
         f.write(f"#### 🔵 Graph RAG\n")
         f.write(f"- **[檢索查閱]** 耗時: {float(gr):.2f} 秒\n")
         f.write(f"- **[答案提取]** 耗時: {float(gg):.2f} 秒\n")
         f.write(f"  🤖 **最終答案**：\n  {ga}\n\n")
         
         # OKF
-        or_t = o_ans[i].get('retrieval_time_seconds', 0)
-        og_t = o_ans[i].get('generation_time_seconds', 0)
-        oa = o_ans[i].get('answer', 'N/A')
+        or_t = o_ans[i].get('retrieval_time_seconds', 0) if i < len(o_ans) else 0
+        og_t = o_ans[i].get('generation_time_seconds', 0) if i < len(o_ans) else 0
+        oa = o_ans[i].get('answer', 'N/A') if i < len(o_ans) else 'N/A'
         f.write(f"#### 🟡 OKF LLM Wiki\n")
         f.write(f"- **[檢索查閱]** 耗時: {float(or_t):.2f} 秒\n")
         f.write(f"- **[答案提取]** 耗時: {float(og_t):.2f} 秒\n")
