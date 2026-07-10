@@ -33,7 +33,7 @@
    * **特色**：以 Vector DB 尋找入口節點，再利用 NetworkX 於記憶體中進行 1-Hop 拓樸擴展，並綁定實體原文確保定義不失真。
 3. **OKF LLM Wiki (Hierarchical MOC + Agent Tools)**
    * **實作**：純文字 Markdown 目錄樹。利用 LLM 生成標準化的 _index.md (Map of Content) 與相對路徑雙向連結。
-   * **特色**：完全不依賴向量庫，賦予 Agent list_dir 與 iew_file 能力，強制 Agent 先閱讀目錄再循線鑽取法規。
+   * **特色**：完全不依賴向量庫，賦予 Agent `list_dir` 與 `view_file` 能力，強制 Agent 先閱讀目錄再循線鑽取法規。
 
 ---
 

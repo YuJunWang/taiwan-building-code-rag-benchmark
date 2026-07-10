@@ -1,4 +1,4 @@
-﻿[繁體中文](README.md) | **English**
+[繁體中文](README.md) | **English**
 
 # LLM Knowledge Retrieval Benchmark: RAG vs. Graph RAG vs. OKF-Wiki
 
@@ -33,7 +33,7 @@ This project intentionally selects "lightweight, open-source, and local-friendly
    * **Features**: Uses Vector DB to find entry nodes, then uses NetworkX for 1-Hop topological traversal in memory, and binds the original entity text to ensure definitions are not distorted.
 3. **OKF LLM Wiki (Hierarchical MOC + Agent Tools)**
    * **Implementation**: Pure text Markdown directory tree. Uses LLM to generate standardized _index.md (Map of Content) and relative path bidirectional links.
-   * **Features**: Completely independent of vector databases, granting the Agent list_dir and iew_file capabilities, forcing the Agent to read the directory first before drilling down into the regulations.
+   * **Features**: Completely independent of vector databases, granting the Agent `list_dir` and `view_file` capabilities, forcing the Agent to read the directory first before drilling down into the regulations.
 
 ---
 
@@ -41,7 +41,7 @@ This project intentionally selects "lightweight, open-source, and local-friendly
 
 The regulation database is small (MB level), so this project has already built-in the complete databases of all three architectures in the Repo data/databases/. You can directly clone and run the tests without rebuilding:
 
-\\\ash
+```bash
 # 1. Clone the project and install packages
 git clone https://github.com/YuJunWang/taiwan-building-code-rag-benchmark.git
 cd taiwan-building-code-rag-benchmark
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 
 # 2. Directly run the evaluation script
 python benchmark/local_evaluator.py
-\\\
+```
 
 > If you need to rebuild the database, the build scripts are located in the scripts/build/ directory and can be executed via Colab.
 
